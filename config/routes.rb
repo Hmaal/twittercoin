@@ -1,3 +1,8 @@
 Twittercoin::Application.routes.draw do
-  root to: "pages#index"
+  root to: "application#index"
+
+  scope "api" do
+
+  end
+
 end

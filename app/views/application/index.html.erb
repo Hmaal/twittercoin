@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html ng-app="tcApp">
+<head>
+  <title>Twittercoin</title>
+  <%= stylesheet_link_tag    "application", media: "all"%>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+
+  <meta name="description" content="Bitcoin Merchants Visualized">
+  <meta name="og:description" content="Bitcoin Merchants Visualized">
+  <meta name="keywords" content="bitcoin" />
+
+  <meta property="og:title" content="CoinStream | Bitcoin Merchants Visualized">
+  <meta property="og:url" content="http://merchants.coinstream.io/">
+  <meta property="og:image" content="http://i.imgur.com/S19Tvw6.png/" />
+
+  <!-- GA ANALYTICS -->
+
+</head>
+<body ng-cloak>
+	<div class="container" ng-view></div>
+</body>
+</html>

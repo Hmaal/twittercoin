@@ -12,8 +12,12 @@ tcApp.config( function( $httpProvider ) {
 tcApp.config( function( $routeProvider ) {
 
 	$routeProvider.when( "/", {
-		templateUrl: "/assets/index.html",
+		templateUrl: "/templates/index.html",
 		controller: "indexCtrl"
 	} )
+
+	$routeProvider.otherwise( {
+		redirectTo: '/'
+	} );
 
 } )

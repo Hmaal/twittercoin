@@ -11,3 +11,10 @@
  *= require_self
  *= require_tree .
  */
+
+
+/*CUSTOM CSS*/
+[ng-cloak] {
+	display: none;
+}
+

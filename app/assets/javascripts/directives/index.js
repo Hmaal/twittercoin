@@ -1,3 +1,0 @@
-tcApp.directive( 'index', function() {
-
-} )
