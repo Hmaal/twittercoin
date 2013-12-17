@@ -1,38 +1,42 @@
 class TweetParser
 
-  attr_accessor :tweet, :values, :recipients, :amounts
+  attr_accessor :tweet, :info, :mentions, :amounts
 
   BOT = "@tippercoin"
 
   def initialize(tweet, sender)
     @tweet = tweet
-    @recipients = Extractor::Recipients.parse(@tweet)
+    @mentions = Extractor::Mentions.parse(@tweet)
     @amounts = Extractor::Amounts.parse(@tweet)
 
-    @values = {
-      recipient: @recipients.first,
+    @info = {
+      recipient: @mentions.first,
       amount: @amounts.first,
       sender: sender
     }
   end
 
   def valid?
-    !@values.values.include?(nil)
+    # Check if nil or 0 are in info values
+    (@info.values & [nil, 0]).empty? && !direct_tweet?
+  end
+
+  def direct_tweet?
+    @mentions.first == BOT
   end
 
   def multiple_recipients?
-    @recipients.count > 1
+    @mentions.count > 2 # actual recipient + BOT
   end
 
   module Extractor
-    module Recipients
+    module Mentions
       extend self
 
       # Accept: String
       # Returns: Array or Strings, or nil
       def parse(tweet)
         usernames = tweet.scan(/(@\w+)/).flatten
-        usernames.delete(BOT)
         return [nil] if usernames.blank?
         return usernames
       end
@@ -43,12 +47,14 @@ class TweetParser
       extend self
 
       ### Supported Currency Symbols:
-      # ...
 
       # Accept: String
       # Returns: Array of Integers, or nil
       def parse(tweet)
-        return [nil]
+        raw_numbers = tweet.scan(/(\d?+.?\d+)\s?BTC/i).flatten
+        amounts_array = raw_numbers.map do |a|
+          satoshi = (a.to_f * SATOSHIS).round(0)
+        end
       end
 
     end
