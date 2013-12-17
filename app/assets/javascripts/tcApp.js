@@ -16,6 +16,16 @@ tcApp.config( function( $routeProvider ) {
 		controller: "indexCtrl"
 	} )
 
+	$routeProvider.when( "/profile/", {
+		templateUrl: "/templates/profile.html",
+		controller: "profileCtrl"
+	} )
+
+	$routeProvider.when( "/account/", {
+		templateUrl: "/templates/profile.html",
+		controller: "accountCtrl"
+	} )
+
 	$routeProvider.otherwise( {
 		redirectTo: '/'
 	} );

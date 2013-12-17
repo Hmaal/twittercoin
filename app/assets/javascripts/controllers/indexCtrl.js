@@ -1,5 +1,5 @@
 'use strict'
 
 tcApp.controller( "indexCtrl", function( $scope ) {
-	$scope.title = "Test Title"
+	$scope.headline = "Send Bitcoins over Twitter"
 } )
