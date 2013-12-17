@@ -15,11 +15,15 @@ Congrats @sender, your tip went through, see it here TipperCoin.com/profile
 
 Sees walkthough/examples
 Doesn't auth via twitter, tried sending anyway
-Hi @sender, complete your tip by depositing on TipperCoin.com/profile/@sender
 
+1. Option One
+Hi @sender, complete your tip by depositing on TipperCoin.com/profile/@sender
 Address, OR, Authenticate via twitter
 If address, transaction goes anonymously
 If auth, deposit, then goes through
+
+2. Option Two (preferrable given less complexity)
+Hi @sender, to make your first tip, please create an account at TipperCoin.com/profile/@sender
 
 **Is @recipient**
 Keep it up @recipient, here's 0.01 BTC, @tipacoin

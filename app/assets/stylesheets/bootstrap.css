@@ -299,7 +299,7 @@ html {
 }
 
 body {
-  font-family: Georgia, "Times New Roman", Times, serif;
+  /*font-family: Georgia, "Times New Roman", Times, serif;*/
   font-size: 15px;
   line-height: 1.428571429;
   color: #777777;
@@ -316,13 +316,13 @@ textarea {
 }
 
 a {
-  color: #eb6864;
+  color: #3a87ad;
   text-decoration: none;
 }
 
 a:hover,
 a:focus {
-  color: #e22620;
+  color: #2d6987;
   text-decoration: underline;
 }
 
@@ -7634,4 +7634,8 @@ td.visible-print {
 
 .affix {
   position: fixed;
+}
+
+.square {
+  border-radius: 0;
 }
