@@ -30,3 +30,37 @@
 	font-size: 14px;
 	vertical-align: middle;
 }
+
+.label-large {
+	font-size: 22px;
+	text-decoration: none;
+}
+
+.no-decorate {
+	text-decoration: none;
+}
+
+.no-decorate:hover {
+	text-decoration: none;
+}
+
+a.text-muted:hover {
+	color: #999999;
+}
+
+.table.thead-center thead tr th {
+	text-align: center;
+}
+
+.table .lead {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.label-link {
+	background-color: #3a87ad;
+}
+
+.twitter-button:hover a {
+	color: #3a87ad;
+}
