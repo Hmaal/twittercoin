@@ -12,10 +12,13 @@ gem 'angularjs-rails', '~> 1.2.5'
 gem 'angular-ui-bootstrap-rails'
 gem "font-awesome-rails"
 
+gem 'awesome_print'
+gem 'pry-rails'
+
 gem 'jbuilder', '~> 1.2'
 
 group :doc do
   gem 'sdoc', require: false
 end
 
-
+gem 'rspec-rails'
