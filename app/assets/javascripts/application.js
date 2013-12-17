@@ -15,6 +15,7 @@
 //= require angular
 //= require angular-route
 //= require angular-resource
+//= require angular-ui-bootstrap-tpls
 //= require tcApp
 //= require_tree ./controllers
 //= require_tree ./directives

@@ -1,6 +1,7 @@
 var tcApp = angular.module( 'tcApp', [
 	'ngRoute',
-	'ngResource'
+	'ngResource',
+	'ui.bootstrap'
 ] )
 
 tcApp.config( function( $httpProvider ) {
@@ -12,8 +13,8 @@ tcApp.config( function( $httpProvider ) {
 tcApp.config( function( $routeProvider ) {
 
 	$routeProvider.when( "/", {
-		templateUrl: "/templates/index.html",
-		controller: "indexCtrl"
+		templateUrl: "/templates/home.html",
+		controller: "homeCtrl"
 	} )
 
 	$routeProvider.when( "/profile/", {
@@ -22,7 +23,7 @@ tcApp.config( function( $routeProvider ) {
 	} )
 
 	$routeProvider.when( "/account/", {
-		templateUrl: "/templates/profile.html",
+		templateUrl: "/templates/account.html",
 		controller: "accountCtrl"
 	} )
 

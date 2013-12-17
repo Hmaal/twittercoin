@@ -1,0 +1,32 @@
+.account .nav-pills li a  {
+	border-radius: 0px;
+	cursor: pointer;
+}
+
+.account .nav-pills li.active a,
+.account .nav-pills li:hover {
+	background-color: #0084b4;
+}
+
+.account .nav-pills {
+	border-bottom: 1px solid #0084b4;
+}
+
+.balance {
+	margin-bottom: 0px;
+	padding-bottom: 0px;
+}
+
+.lead-super {
+	font-size: 29px;
+}
+
+.unique-address {
+	margin-top: 50px;
+}
+
+.form-horizontal input {
+	font-size: 26px;
+	font-weight: 200;
+	height: 60px;
+}

@@ -1,0 +1,59 @@
+.username {
+	font-size: 65px;
+}
+
+.key-info .h2 {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.label-small {
+	font-size: 14px;
+	vertical-align: middle;
+}
+
+.label-large {
+	font-size: 22px;
+	text-decoration: none;
+}
+
+.no-decorate {
+	text-decoration: none;
+}
+
+.no-decorate:hover {
+	text-decoration: none;
+}
+
+a.text-muted:hover {
+	color: #999999;
+}
+
+.table.thead-center thead tr th {
+	text-align: center;
+}
+
+.table .lead {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.label-link {
+	background-color: #3a87ad;
+}
+
+.twitter-button:hover {
+	color: #3a87ad;
+}
+
+.text-yellow {
+	color: #e7d70b;
+}
+
+.label-yellow {
+	background-color: #ECDD13;
+}
+
+.label-thin {
+	font-weight: 200;
+}

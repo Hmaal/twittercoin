@@ -8,8 +8,11 @@
  * You're free to add application-wide styles to this file and they'll appear at the top of the
  * compiled file, but it's generally better to create a new file per style scope.
  *
- *= require_tree .
+ *= require bootstrap
  *= require font-awesome
+ *= require profile
+ *= require account
+
  *= require_self
  */
 
@@ -20,15 +23,6 @@
 	display: none;
 }
 
-.username {
-	font-size: 65px;
-}
-
-.key-info .h2 {
-	margin-top: 20px;
-	margin-bottom: 20px;
-}
-
 .navbar-brand {
 	padding-bottom: 0px;
 	padding-top: 10px;
@@ -36,53 +30,10 @@
 	padding-right: 20px;
 }
 
-.label-small {
-	font-size: 14px;
-	vertical-align: middle;
+.twitter-blue {
+	color: #00aced;
 }
 
-.label-large {
-	font-size: 22px;
-	text-decoration: none;
-}
-
-.no-decorate {
-	text-decoration: none;
-}
-
-.no-decorate:hover {
-	text-decoration: none;
-}
-
-a.text-muted:hover {
-	color: #999999;
-}
-
-.table.thead-center thead tr th {
-	text-align: center;
-}
-
-.table .lead {
-	margin-top: 20px;
-	margin-bottom: 20px;
-}
-
-.label-link {
-	background-color: #3a87ad;
-}
-
-.twitter-button:hover {
-	color: #3a87ad;
-}
-
-.text-yellow {
-	color: #e7d70b;
-}
-
-.label-yellow {
-	background-color: #ECDD13;
-}
-
-.label-thin {
-	font-weight: 200;
+.twitter-blue-dark {
+	color: #0084b4;
 }
