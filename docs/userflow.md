@@ -38,6 +38,13 @@ Clicks a couple of profile links
 Sees landing page
 As per above
 
+### Send
+
+**@sender doesn't have enough btc**
+Hi @sender, complete your tip by topping up your account TipperCoin.com/#/account?deposit=1000000
+Deposit page
+Not enough, deposit 0.0000 BTC then try again.
+Or, tip a lower amount
 
 ### Retention
 Tip Suggestions
