@@ -20,6 +20,15 @@
 	display: none;
 }
 
+.username {
+	font-size: 65px;
+}
+
+.key-info .h2 {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
 .navbar-brand {
 	padding-bottom: 0px;
 	padding-top: 10px;
@@ -68,4 +77,12 @@ a.text-muted:hover {
 
 .text-yellow {
 	color: #e7d70b;
+}
+
+.label-yellow {
+	background-color: #ECDD13;
+}
+
+.label-thin {
+	font-weight: 200;
 }
