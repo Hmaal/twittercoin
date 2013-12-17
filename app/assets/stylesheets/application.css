@@ -15,6 +15,7 @@
 
 
 /*CUSTOM CSS*/
+
 [ng-cloak] {
 	display: none;
 }
@@ -61,6 +62,10 @@ a.text-muted:hover {
 	background-color: #3a87ad;
 }
 
-.twitter-button:hover a {
+.twitter-button:hover {
 	color: #3a87ad;
+}
+
+.text-yellow {
+	color: #e7d70b;
 }
