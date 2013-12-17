@@ -8,3 +8,12 @@ tcApp.config( function( $httpProvider ) {
 	authToken = $( "meta[name=\"csrf-token\"]" ).attr( "content" );
 	return $httpProvider.defaults.headers.common[ "X-CSRF-TOKEN" ] = authToken;
 } );
+
+tcApp.config( function( $routeProvider ) {
+
+	$routeProvider.when( "/", {
+		templateUrl: "/assets/index.html",
+		controller: "indexCtrl"
+	} )
+
+} )

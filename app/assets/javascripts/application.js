@@ -15,4 +15,7 @@
 //= require angular
 //= require angular-route
 //= require angular-resource
-//= require_tree .
+//= require tcApp
+//= require_tree ./controllers
+//= require_tree ./directives
+//= require_tree ./services
