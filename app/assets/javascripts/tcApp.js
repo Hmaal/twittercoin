@@ -32,3 +32,16 @@ tcApp.config( function( $routeProvider ) {
 	} );
 
 } )
+
+// Instantiate Pusher
+var pusher = new Pusher( 'af66c456e5950e60e048' );
+
+// Pusher Debugger
+// Pusher.log = function( message ) {
+// 	window.console.log( message );
+// };
+
+// var channel = pusher.subscribe( 'test_channel' );
+// channel.bind( 'my_event', function( data ) {
+// 	alert( data.message );
+// } );
