@@ -1,1 +1,3 @@
+# 1 Bitcoin equals X
 SATOSHIS = 100_000_000
+MILLIBIT = 1000

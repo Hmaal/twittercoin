@@ -65,32 +65,6 @@ describe 'TweetParser | ' do
     end
   end
 
-
-  context "Currency Symbols" do
-
-
-    it "should extract/convert $ to SATOSHIS"
-
-    it "should extract/convert BTC to SATOSHIS"
-
-    it "should extract/convert mBTC to SATOSHIS"
-
-    it "should extract/convert ฿ to SATOSHIS"
-
-    it "should extract/convert B to SATOSHIS"
-
-    it "should extract/convert beers to SATOSHIS"
-
-    it "should extract/convert internets to SATOSHIS"
-
-    it "should be extract both upper/lowercases on BTC/btc"
-
-    it "should prefer btc/BTC if multiple currency symbols"
-
-    it "should extract amounts with/without spaces"
-
-  end
-
   context "Invalid tweets: " do
     it "should contain an invalid attribute for invalid tweets" do
       tweet = "@recipient does this btc thing actually work? @tippercoin"
@@ -113,6 +87,50 @@ describe 'TweetParser | ' do
       expect(t.info[:amount]).to eq(0)
     end
 
+  end
+
+  context "Suffix Symbols: " do
+
+    it "should extract/convert BTC to SATOSHIS" do
+      tweet1 = "@recipient, really good article, keep it up! Here's a tip 0.041 BTC @tippercoin"
+      # value = 0.041 * 100_000_000
+      t1 = TweetParser.new(tweet1, sender)
+      expect(t1.info[:amount]).to eq(4100000)
+
+      tweet2 = "@recipient, really good article, keep it up! Here's a tip 2 BTC @tippercoin"
+      t2 = TweetParser.new(tweet2, sender)
+      expect(t2.info[:amount]).to eq(200000000)
+    end
+
+    it "should extract/convert mBTC to SATOSHIS" do
+      tweet = "@recipient, really good article, keep it up! Here's a tip 5 mBTC @tippercoin"
+      t = TweetParser.new(tweet, sender)
+      # value = 5 * 100_000_000 / 1000
+      expect(t.info[:amount]).to eq(500000)
+    end
+
+    it "should extract/convert beers to SATOSHIS"
+
+    it "should extract/convert internets to SATOSHIS"
+
+    it "should be extract both upper/lowercases of suffix symbols"
+
+    it "should extract amounts with/without spaces of suffix symbols"
+
+    it "should prefer suffix btc/BTC if multiple currency symbols"
+
+  end
+
+  context "Prefix Symbols" do
+    it "should extract/convert $ to SATOSHIS"
+
+    it "should extract/convert ฿ to SATOSHIS"
+
+    it "should extract/convert B to SATOSHIS"
+
+    it "should extract amounts with/without spaces of suffix symbols"
+
+    it "should prefer suffix btc/BTC if multiple currency symbols"
   end
 
 

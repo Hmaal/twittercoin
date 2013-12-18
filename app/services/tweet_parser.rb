@@ -47,17 +47,69 @@ class TweetParser
       extend self
 
       ### Supported Currency Symbols:
+      ### Order matters, higher means more priority
+      SYMBOLS = [
+        {
+          name: :BTC,
+          regex: /(\d?+.?\d+)\s?BTC/i,
+          satoshify: Proc.new {|n| (n.to_f * SATOSHIS).to_i}
+        },
+        {
+          name: :mBTC,
+          regex: /(\d?+.?\d+)\s?mBTC/i,
+          satoshify: Proc.new {|n| (n.to_f * SATOSHIS / MILLIBIT).to_i }
+        },
+        {
+          name: :USD,
+          regex: /(\d?+.?\d+)\s?USD/i,
+          satoshify: Proc.new {|n| n } # get marketprice
+        },
+        {
+          name: :dollar,
+          regex: /(\d?+.?\d+)\s?dollar/i,
+          satoshify: Proc.new {|n| n } # get marketprice
+        },
+        {
+          name: :beer,
+          regex: /(\d?+.?\d+)\s?beer/i,
+          satoshify: Proc.new {|n| n } # get marketprice
+        },
+        {
+          name: :internet,
+          regex: /(\d?+.?\d+)\s?internet/i,
+          satoshify: Proc.new {|n| n } # get marketprice
+        }
+      ]
 
       # Accept: String
       # Returns: Array of Integers, or nil
       def parse(tweet)
-        raw_numbers = tweet.scan(/(\d?+.?\d+)\s?BTC/i).flatten
-        amounts_array = raw_numbers.map do |a|
-          satoshi = (a.to_f * SATOSHIS).round(0)
+
+        # Parse all and loop until first symbol is valid
+        # See order at top
+        parse_all(tweet).each do |p|
+          values = p.values.flatten
+          return values if !values.empty?
+        end
+
+        # Return nil if nothing is found
+        return [nil]
+      end
+
+      # Accept: String
+      # Returns: Array of hash
+      def parse_all(tweet)
+        SYMBOLS.map do |sym|
+          raw = tweet.scan(sym[:regex]).flatten
+          {
+            sym[:name] => raw.map { |r| sym[:satoshify].call(r) }
+          }
         end
       end
 
+
     end
   end
+
 
 end
