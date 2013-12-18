@@ -6,9 +6,6 @@ describe 'TweetParser | ' do
   # See vcr/latest.yml for 'cached' api calls
   let(:btc_usd) { 695.0 }
 
-  let(:beer) { 4 }
-  let(:internet) { 1.337 }
-
   context "Basic: " do
 
     before(:each) do
@@ -97,6 +94,9 @@ describe 'TweetParser | ' do
 
   context "Suffix Symbols: " do
 
+    let(:beer) { 4 }
+    let(:internet) { 1.337 }
+
     it "should extract/convert BTC to SATOSHIS" do
       tweet1 = "@recipient, really good article, keep it up! Here's a tip 0.041 BTC @tippercoin"
       # value = 0.041 * 100_000_000
@@ -165,8 +165,6 @@ describe 'TweetParser | ' do
       expect(t.info[:amount]).to eq(1_000_000)
     end
 
-    it "should extract amounts with/without spaces of suffix symbols"
-
   end
 
   context "Prefix Symbols: " do
@@ -181,7 +179,7 @@ describe 'TweetParser | ' do
     end
 
     it "should extract/convert $ to SATOSHIS", :vcr do
-      tweet = "@recipient, really good article, keep it up! Here's a tip $3 @tippercoin"
+      tweet = "@recipient, really good article, keep it up! Here's a tip $ 3 @tippercoin"
 
       satoshis = ((3  / btc_usd) * SATOSHIS).to_i
       t = TweetParser.new(tweet, sender)
@@ -193,7 +191,7 @@ describe 'TweetParser | ' do
       t1 = TweetParser.new(tweet1, sender)
       expect(t1.info[:amount]).to eq(1_000_000)
 
-      tweet2 = "@recipient, really good article, keep it up! Here's a tip mBTC 8 @tippercoin"
+      tweet2 = "@recipient, really good article, keep it up! Here's a tip mBTC8 @tippercoin"
       t2 = TweetParser.new(tweet2, sender)
       expect(t2.info[:amount]).to eq(800_000)
     end
@@ -206,12 +204,26 @@ describe 'TweetParser | ' do
 
     end
 
-    it "should extract amounts with/without spaces of prefix symbols"
   end
-
 
 end
 
 describe 'TweetParser Bulk Check' do
+
+  # Hard coded satoshis, values reflected in tweets_spacing
+  let(:satoshis) { 1_000_000}
+  let(:sender) { "@sender" }
+
+  # Make sure tweets are parsed regardless of spacing between prefix/prefix
+  context "Spacing" do
+    TWEETS = File.open("spec/tweet_examples/tweets_spacing").read.split("\n").compact
+
+    TWEETS.each_with_index do |tweet, index|
+      it "line num: #{index}", :vcr do
+        t = TweetParser.new(tweet, sender)
+        expect(t.info[:amount]).to eq(satoshis)
+      end
+    end
+  end
 
 end

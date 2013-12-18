@@ -129,7 +129,6 @@ class TweetParser
         end
       end
 
-
     end
   end
 
