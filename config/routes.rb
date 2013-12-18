@@ -4,6 +4,8 @@ Twittercoin::Application.routes.draw do
   # TODO Define Resource permission
   namespace :api, defaults: { format: :json }  do
     resources :profiles, param: :screen_name
+
+    get "streaming/message" => "streaming#message"
   end
 
 end

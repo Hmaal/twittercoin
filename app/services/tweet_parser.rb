@@ -77,27 +77,27 @@ class TweetParser
         {
           name: :USD,
           regex: /(\d*.?\d*)\s?USD/i,
-          satoshify: Proc.new {|n| (n.to_f / MtgoxService.latest * SATOSHIS).to_i }
+          satoshify: Proc.new {|n| (n.to_f / Mtgox.latest * SATOSHIS).to_i }
         },
         {
           name: :dollar,
           regex: /(\d*.?\d*)\s?dollar/i,
-          satoshify: Proc.new {|n| (n.to_f / MtgoxService.latest * SATOSHIS).to_i }
+          satoshify: Proc.new {|n| (n.to_f / Mtgox.latest * SATOSHIS).to_i }
         },
         {
           name: :USD_SIGN,
           regex: /\$\s?(\d*.?\d*)/i,
-          satoshify: Proc.new {|n| (n.to_f / MtgoxService.latest * SATOSHIS).to_i }
+          satoshify: Proc.new {|n| (n.to_f / Mtgox.latest * SATOSHIS).to_i }
         },
         {
           name: :beer,
           regex: /(\d*.?\d*)\s?beer/i,
-          satoshify: Proc.new {|n| (n.to_f * 4 / MtgoxService.latest * SATOSHIS).to_i }
+          satoshify: Proc.new {|n| (n.to_f * 4 / Mtgox.latest * SATOSHIS).to_i }
         },
         {
           name: :internet,
           regex: /(\d*.?\d*)\s?internet/i,
-          satoshify: Proc.new {|n| (n.to_f * 1.337 / MtgoxService.latest * SATOSHIS).to_i }
+          satoshify: Proc.new {|n| (n.to_f * 1.337 / Mtgox.latest * SATOSHIS).to_i }
         }
       ]
 

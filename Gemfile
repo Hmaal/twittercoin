@@ -30,3 +30,5 @@ end
 gem 'httparty'
 
 gem 'twitter'
+
+gem 'puma'
