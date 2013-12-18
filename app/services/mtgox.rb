@@ -1,4 +1,4 @@
-module MtgoxService
+module Mtgox
   extend self
   BASE =  "https://data.mtgox.com/api/2/"
 
