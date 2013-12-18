@@ -3,6 +3,14 @@ ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 require 'rspec/autorun'
+require 'vcr'
+
+
+VCR.configure do |c|
+  c.cassette_library_dir = Rails.root.join("spec", "vcr")
+  c.hook_into :webmock
+
+end
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
@@ -39,4 +47,10 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+
+  config.treat_symbols_as_metadata_keys_with_true_values = true
+
+  config.around(:each, :vcr) do |example|
+    VCR.use_cassette("latest") { example.call }
+  end
 end
