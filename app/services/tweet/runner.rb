@@ -16,8 +16,8 @@ module Tweet::Runner
     handler.build_recipient_msg
 
     handler.push_tx
-    handler.reply_to_sender
 
+    handler.reply_to_sender
     handler.reply_to_recipient
 
   end

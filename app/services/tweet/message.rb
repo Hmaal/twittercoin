@@ -20,19 +20,14 @@ module Tweet::Message
 
     def no_account(sender)
       link = "tippercoin.com/signup"
-      "Hi #{sender}, complete your tip by authenticating via twitter and "\
-      "making a deposit. #{link}"
+      "Hi #{sender}, to send tips, please authenticate via twitter, "\
+      "make a deposit, and then try again. #{link}"
     end
 
     def not_enough_balance
       link = "tippercoin.com/#/account/deposit?amount=#{amount}"
-      "Hi #{sender}, complete your tip by topping up on your account with "\
-      "#{amount / SATOSHIS} BTC. #{link}"
-    end
-
-    def unknown
-      link = "tippercoin.com/#/documentation"
-      "Hi #{sender}, sorry, I'm not sure what you meant :s. Please refer to #{link}"
+      "Hi #{sender}, please top up on your account with "\
+      "#{amount / SATOSHIS} BTC before sending this tip. #{link}"
     end
 
     def zero_amount
@@ -41,6 +36,11 @@ module Tweet::Message
     end
 
     def direct_tweet
+      link = "tippercoin.com/#/documentation"
+      "Hi #{sender}, sorry, I'm not sure what you meant :s. Please refer to #{link}"
+    end
+
+    def unknown
       link = "tippercoin.com/#/documentation"
       "Hi #{sender}, sorry, I'm not sure what you meant :s. Please refer to #{link}"
     end

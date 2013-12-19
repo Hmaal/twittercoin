@@ -1,6 +1,6 @@
 class Tweet::Handler
 
-  attr_accessor :tweet, :sender, :status_id :parsed_tweet, :valid
+  attr_accessor :tweet, :sender, :status_id, :parsed_tweet, :valid
 
   def initialize(tweet: nil, sender: nil, status_id: nil)
     @tweet = tweet
@@ -44,16 +44,17 @@ class Tweet::Handler
   end
 
   def find_or_create_recipient
-
+    @recipient = find_recipient || create_recipient
   end
 
+  # Returns ActiveRecord Object, or nil
   def find_recipient
-    # @recipient = User.where(screen_name: @parsed_tweet.info[:recipient])
+    # User.where(screen_name: @parsed_tweet.info[:recipient])
   end
 
   def create_recipient
     ## New @recipient
-    @recipient = TwitterSearch.new(@parsed_tweet.info[:recipient])
+    TwitterSearch.new(@parsed_tweet.info[:recipient])
 
     Rails.logger.info("Generating new Bitcoin address")
     # BitcoinAPI.generate_address
