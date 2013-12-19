@@ -23,7 +23,7 @@ If address, transaction goes anonymously
 If auth, deposit, then goes through
 
 2. Option Two (preferrable given less complexity)
-Hi @sender, to make your first tip, please create an account at TipperCoin.com/profile/@sender
+Hi @sender, to make your first tip, please create an account at TipperCoin.com/create?screen_name='screename'
 
 **Is @recipient**
 Keep it up @recipient, here's 0.01 BTC, @tipacoin

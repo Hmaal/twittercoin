@@ -34,3 +34,6 @@ gem 'twitter'
 gem 'puma'
 
 gem 'pusher'
+
+gem 'delayed_job_active_record'
+gem "delayed_job_web"
