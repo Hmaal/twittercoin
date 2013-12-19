@@ -1,77 +1,91 @@
 class Tweet::Handler
 
-  attr_accessor :tweet, :sender, :status_id, :parsed_tweet, :valid
+  attr_accessor :tweet, :sender, :recipient,
+  :sender_reply, :recipient_reply, :recipient_user, :sender_user,
+  :status_id, :parsed_tweet, :valid
 
   def initialize(tweet: nil, sender: nil, status_id: nil)
     @tweet = tweet
     @sender = sender
     @status_id = status_id
     @parsed_tweet = Tweet::Parser.new(@tweet, @sender)
-    @valid = @parsed_tweet.valid?
+    @recipient = @parsed_tweet.info[:recipient]
   end
 
-  def build_sender_msg(valid: nil)
-    if valid || @valid
-      return Tweet::Message::Valid.sender(@sender)
-    end
+  def valid?
+    return false if !@parsed_tweet.valid?
+    return false if !@sender_user # TODO: Check against ActiveRecord
 
-    if !@user
-      return Tweet::Message::Invalid.no_account(@sender)
+    return true
+  end
+
+  def sender_reply_build
+    if valid?
+      @sender_reply = Tweet::Message::Valid.sender(@recipient, @sender) and return
     end
 
     if @parsed_tweet.info[:amount].zero?
-      return Tweet::Message::Invalid.zero_amount(@sender)
-    end
-
-    if @user.enough_balance?
-      return Tweet::Message::Invalid.not_enough_balance(@sender)
+      @sender_reply = Tweet::Message::Invalid.zero_amount(@recipient) and return
     end
 
     if @parsed_tweet.direct_tweet?
-      return Tweet::Message::Invalid.direct_tweet(@sender)
+      @sender_reply = Tweet::Message::Invalid.direct_tweet(@recipient) and return
     end
 
-    return Tweet::Message::Invalid.unknown(@sender)
+    if !@sender_user
+      @sender_reply = Tweet::Message::Invalid.no_account(@recipient) and return
+    end
+
+    if @sender_user.enough_balance?
+      @sender_reply = Tweet::Message::Invalid.not_enough_balance(@recipient) and return
+    end
+
+    @sender_reply = Tweet::Message::Invalid.unknown(@recipient)
   end
 
-  def build_recipient_msg
-    @recipient_msg = Tweet::Message::Valid.recipient(@sender)
+  def recipient_reply_build
+    @recipient_reply = Tweet::Message::Valid.recipient(
+      @recipient, @sender, @parsed_tweet.info[:amount])
+  end
+
+  def sender_reply_deliver
+    TWITTER_CLIENT.update(@sender_reply, in_reply_to_status_id: @status_id)
+  end
+
+  def recipient_reply_deliver
+    TWITTER_CLIENT.update(@recipient_reply, in_reply_to_status_id: @status_id)
   end
 
   def save_tweet
     Rails.logger.info("Writing tweet into DB")
-    @user = nil
+    @sender_user = nil
+  end
+
+  def find_or_create_sender
+    @sender_user = find_user(@sender) || create_user(@sender)
   end
 
   def find_or_create_recipient
-    @recipient = find_recipient || create_recipient
+    @recipient_user = find_user(@recipient) || create_user(@recipient)
   end
 
   # Returns ActiveRecord Object, or nil
-  def find_recipient
-    # User.where(screen_name: @parsed_tweet.info[:recipient])
+  def find_user(screen_name)
+    # User.where(screen_name: screen_name)
   end
 
-  def create_recipient
+  def create_user(screen_name)
     ## New @recipient
-    TwitterSearch.new(@parsed_tweet.info[:recipient])
+    # TwitterSearch.new(screen_name)
 
-    Rails.logger.info("Generating new Bitcoin address")
+    # Rails.logger.info("Generating new Bitcoin address")
     # BitcoinAPI.generate_address
 
-    Rails.logger.info("Writing new @recipient into DB")
+    # Rails.logger.info("Writing new @recipient into DB")
   end
 
   def push_tx
     # BitcoinAPI.push_tx()
-  end
-
-  def reply_to_sender
-    TWITTER_CLIENT.update(@sender_msg, in_reply_to_status_id: @status_id)
-  end
-
-  def reply_to_recipient
-    TWITTER_CLIENT.update(@recipient_msg, in_reply_to_status_id: @status_id)
   end
 
 end

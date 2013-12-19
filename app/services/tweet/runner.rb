@@ -6,19 +6,23 @@ module Tweet::Runner
     handler = Tweet::Handler.new(tweet: nil, screen_name: nil, status_id: nil)
 
     handler.save_tweet
-    handler.find_or_create_recipient
-
-    handler.build_sender_msg
+    handler.find_user(sender)
 
     # Short Circuit if Invalid
-    return handler.reply_to_sender if !handler.valid
+    if !handler.valid?
+      handler.sender_reply_build
+      return handler.sender_reply_deliver
+    end
 
-    handler.build_recipient_msg
+    handler.find_or_create_recipient
 
     handler.push_tx
 
-    handler.reply_to_sender
-    handler.reply_to_recipient
+    handler.sender_reply_build
+    handler.sender_reply_deliver
+
+    handler.recipient_reply_build
+    handler.recipient_reply_deliver
 
   end
 

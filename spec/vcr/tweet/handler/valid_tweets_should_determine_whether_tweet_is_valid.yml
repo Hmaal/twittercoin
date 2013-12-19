@@ -1,0 +1,71 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.twitter.com/1.1/users/show.json?screen_name=@sender
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/json
+      User-Agent:
+      - Twitter Ruby Gem 5.3.0
+      Authorization:
+      - OAuth oauth_consumer_key="pqglTrHV4p3ZpR5SwlYmNw", oauth_nonce="3b3ce25a7880684466cfafb0524de36d",
+        oauth_signature="BZC8BFgeH7Ema7KITj%2FyK3LHk%2FU%3D", oauth_signature_method="HMAC-SHA1",
+        oauth_timestamp="1387443303", oauth_token="2247759402-398tcaxEleVNtRY8jRQ6iF2MErB4DCPGdGftoiM",
+        oauth_version="1.0"
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - no-cache, no-store, must-revalidate, pre-check=0, post-check=0
+      Content-Length:
+      - '512'
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Thu, 19 Dec 2013 08:55:03 GMT
+      Expires:
+      - Tue, 31 Mar 1981 05:00:00 GMT
+      Last-Modified:
+      - Thu, 19 Dec 2013 08:55:03 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - tfe
+      Set-Cookie:
+      - guest_id=v1%3A138744330338838651; Domain=.twitter.com; Path=/; Expires=Sat,
+        19-Dec-2015 08:55:03 UTC
+      - lang=en
+      Status:
+      - 200 OK
+      Strict-Transport-Security:
+      - max-age=631138519
+      X-Access-Level:
+      - read-write
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Rate-Limit-Limit:
+      - '180'
+      X-Rate-Limit-Remaining:
+      - '178'
+      X-Rate-Limit-Reset:
+      - '1387444203'
+      X-Transaction:
+      - 70d9420e107e372f
+      X-Xss-Protection:
+      - 1; mode=block
+    body:
+      encoding: UTF-8
+      string: '{"id":12512892,"id_str":"12512892","name":"sender","screen_name":"sender","location":"","description":"","url":null,"entities":{"description":{"urls":[]}},"protected":false,"followers_count":9,"friends_count":0,"listed_count":0,"created_at":"Mon
+        Jan 21 22:44:08 +0000 2008","favourites_count":0,"utc_offset":-25200,"time_zone":"Mountain
+        Time (US & Canada)","geo_enabled":false,"verified":false,"statuses_count":0,"lang":"en","contributors_enabled":false,"is_translator":false,"profile_background_color":"C0DEED","profile_background_image_url":"http:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png","profile_background_image_url_https":"https:\/\/abs.twimg.com\/images\/themes\/theme1\/bg.png","profile_background_tile":false,"profile_image_url":"http:\/\/abs.twimg.com\/sticky\/default_profile_images\/default_profile_0_normal.png","profile_image_url_https":"https:\/\/abs.twimg.com\/sticky\/default_profile_images\/default_profile_0_normal.png","profile_link_color":"0084B4","profile_sidebar_border_color":"C0DEED","profile_sidebar_fill_color":"DDEEF6","profile_text_color":"333333","profile_use_background_image":true,"default_profile":true,"default_profile_image":true,"following":false,"follow_request_sent":false,"notifications":false}'
+    http_version: 
+  recorded_at: Thu, 19 Dec 2013 08:55:03 GMT
+recorded_with: VCR 2.8.0

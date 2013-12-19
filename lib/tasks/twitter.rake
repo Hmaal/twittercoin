@@ -11,10 +11,12 @@ namespace :twitter do
         case object
         when Twitter::Tweet
           ap "\"#{object.text}\" - #{object.user.screen_name}"
+
           Tweet::Runner.execute(
             tweet: object.text,
             screen_name: object.user.screen_name,
             status_id: object.id)
+
         when Twitter::DirectMessage
           ap "DM Received"
         when Twitter::Streaming::StallWarning

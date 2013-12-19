@@ -1,0 +1,65 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.twitter.com/1.1/statuses/update.json
+    body:
+      encoding: US-ASCII
+      string: in_reply_to_status_id=123456789&status
+    headers:
+      Accept:
+      - application/json
+      User-Agent:
+      - Twitter Ruby Gem 5.3.0
+      Authorization:
+      - OAuth oauth_consumer_key="pqglTrHV4p3ZpR5SwlYmNw", oauth_nonce="86f8089336e4be278281c106df13d423",
+        oauth_signature="x90wU1SrrINrDH8D5ty2c0raBtg%3D", oauth_signature_method="HMAC-SHA1",
+        oauth_timestamp="1387442009", oauth_token="2247759402-398tcaxEleVNtRY8jRQ6iF2MErB4DCPGdGftoiM",
+        oauth_version="1.0"
+      Content-Type:
+      - application/x-www-form-urlencoded
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 403
+      message: Forbidden
+    headers:
+      Cache-Control:
+      - no-cache, no-store, must-revalidate, pre-check=0, post-check=0
+      Content-Length:
+      - '98'
+      Content-Type:
+      - application/json;charset=utf-8
+      Date:
+      - Thu, 19 Dec 2013 08:33:29 GMT
+      Expires:
+      - Tue, 31 Mar 1981 05:00:00 GMT
+      Last-Modified:
+      - Thu, 19 Dec 2013 08:33:29 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - tfe
+      Set-Cookie:
+      - guest_id=v1%3A138744200941506092; Domain=.twitter.com; Path=/; Expires=Sat,
+        19-Dec-2015 08:33:29 UTC
+      - lang=en
+      Status:
+      - 403 Forbidden
+      Strict-Transport-Security:
+      - max-age=631138519
+      X-Access-Level:
+      - read-write
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Transaction:
+      - e22479afcc05f4a9
+      X-Xss-Protection:
+      - 1; mode=block
+    body:
+      encoding: UTF-8
+      string: '{"errors":[{"code":170,"message":"Missing required parameter: status."}]}'
+    http_version: 
+  recorded_at: Thu, 19 Dec 2013 08:33:29 GMT
+recorded_with: VCR 2.8.0

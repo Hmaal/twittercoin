@@ -3,12 +3,12 @@ module Tweet::Message
   module Valid
     extend self
 
-    def sender
-      link = "tippercoin.com/#/profile/#{recipient}?tip=#{tip_id}"
+    def sender(recipient, sender)
+      link = "tippercoin.com/#/profile/#{recipient}"
       "#{sender}, congrats, your tip was successful! See it here #{link}"
     end
 
-    def recipient
+    def recipient(recipient, sender, amount)
       link = "tippercoin.com/#/profile/#{recipient}"
       "Hi #{recipient}, #{sender} just tipped you #{amount / SATOSHIS} BTC! "\
       "See it here #{link}"
