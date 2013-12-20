@@ -11,3 +11,17 @@ user = User.create({
   authenticated: true,
   api_user_id_str: "2253000787"
 })
+
+user2 = User.create({
+  screen_name: "JimmyMcTester",
+  authenticated: true,
+  api_user_id_str: "31232132131"
+})
+
+user.tips_given.create({
+  content: "asdfasdfsadf",
+  api_tweet_id_str: 123123123,
+  recipient_id: user2.id,
+  sender_id: user.id,
+  transaction_id: nil
+})

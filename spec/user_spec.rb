@@ -4,35 +4,39 @@ describe User do
 
   context "Creating User" do
     before(:each) do
-      @user = User.create(screen_name)
+      @user = build(:mctestor)
+      @user2 = create(:jimmy_mctester)
     end
-
-    @tweet = @user.tweets.new({
-      content: tweet,
-      mentions: parsed_tweet.mentions,
-      amounts: parsed_tweet.amounts,
-      unit: parsed_tweet.unit,
-      sender: parsed_tweet.sender,
-      valid: parsed_tweet.valid?,
-      api_tweet_id: tweet.id
-    })
 
     it "should save user" do
-      expect(@tweet.save).to eq(true)
+      expect(@user.save).to eq(true)
     end
 
-    it "should create tips" do
-      @user.tweet_tips.create({
-        amount: 1000000,
-        tweet_id: @tweet.id,
-        recipient_id: 12
-
+    it "should not save tweet tip with sender/recipient id" do
+      @tweet_tip = @user.tips_given.new({
+        content: "tweet blah",
+        api_tweet_id_str: '123456'
       })
 
-      expect(@user.tweet_tips.count).to eq(1)
+      expect(@tweet_tip.recipient_id).to eq(nil)
+      expect(@tweet_tip.sender).to eq(@user.id)
+
+      expect(@tweet_tip.save).to eq(false)
     end
 
-    it "should perform validations"
+    it "should save tips when all attributes given" do
+      @user.save
+
+      @tweet_tip = @user.tips_given.new({
+        content: "tweet blah",
+        api_tweet_id_str: '123456',
+        recipient_id: @user2.id
+      })
+
+      expect(TweetTip.count).to eq(0)
+      expect(@tweet_tip.save).to eq(true)
+      expect(TweetTip.count).to eq(1)
+    end
 
   end
 
@@ -65,18 +69,18 @@ describe User do
       before(:each) do
         # Factory some tips
 
-        @tweet_tips = @user.tweet_tips
+        @tips_given = @user.tips_given
 
-        @first_tip = @tweet_tips.first
+        @first_tip = @tips_given.first
       end
 
       it "should build tips object" do
-        expect(@tweet_tips).to_not be_blank
+        expect(@tips_given).to_not be_blank
       end
 
       it "should build total tips" do
-        expect(@tweet_tips.total_received).to eq(1_000_000)
-        expect(@tweet_tips.total_given).to eq(2_000_000)
+        expect(@tips_given.total_received).to eq(1_000_000)
+        expect(@tips_given.total_given).to eq(2_000_000)
       end
 
       it "should build sender information" do
