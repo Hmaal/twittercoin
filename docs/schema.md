@@ -6,8 +6,8 @@ api_user_id_str
 ### TweetTip (like a followings table)
 content
 api_tweet_id_str
-recipient_id user
-sender_id user
+recipient_id (user)
+sender_id (user)
 transaction_id
 
 ### Transaction

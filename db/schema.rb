@@ -17,8 +17,8 @@ ActiveRecord::Schema.define(version: 20131220014726) do
   enable_extension "plpgsql"
 
   create_table "addresses", force: true do |t|
-    t.string   "encrypted_private_key", null: false
-    t.string   "public_key",            null: false
+    t.string   "encrypted_private_key"
+    t.string   "public_key"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -28,8 +28,8 @@ ActiveRecord::Schema.define(version: 20131220014726) do
   add_index "addresses", ["public_key"], name: "index_addresses_on_public_key", using: :btree
 
   create_table "transactions", force: true do |t|
-    t.integer  "satoshis",     null: false
-    t.string   "tx_hash",      null: false
+    t.integer  "satoshis"
+    t.string   "tx_hash"
     t.integer  "tweet_tip_id"
     t.integer  "address_id"
     t.datetime "created_at"
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 20131220014726) do
   end
 
   create_table "tweet_tips", force: true do |t|
-    t.string   "content",          null: false
+    t.string   "content"
     t.string   "api_tweet_id_str"
     t.integer  "recipient_id"
     t.integer  "sender_id"

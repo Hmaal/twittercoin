@@ -1,7 +1,7 @@
 class CreateTweetTips < ActiveRecord::Migration
   def change
     create_table :tweet_tips do |t|
-      t.string :content, null: false
+      t.string :content
       t.string :api_tweet_id_str
       t.integer :recipient_id
       t.integer :sender_id

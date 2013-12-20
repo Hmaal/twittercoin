@@ -6,4 +6,8 @@ class TweetTip < ActiveRecord::Base
 
   has_one :transaction
 
+  validates :recipient_id, presence: true
+  validates :sender_id, presence: true
+  validates :content, presence: true, uniqueness: true
+
 end
