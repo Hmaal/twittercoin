@@ -15,8 +15,9 @@ module BitcoinAPI
     }
   end
 
-  def get_balance(address)
-
+  # string address
+  def get_info(address)
+    BitconNodeAPI.get_addr(address)
   end
 
   def tx(from_address, to_address, amount)
