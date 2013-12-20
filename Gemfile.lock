@@ -48,6 +48,8 @@ GEM
     equalizer (0.0.7)
     erubis (2.7.0)
     execjs (2.0.2)
+    factory_girl (4.3.0)
+      activesupport (>= 3.0.0)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
     font-awesome-rails (4.0.3.0)
@@ -179,6 +181,7 @@ DEPENDENCIES
   angularjs-rails (~> 1.2.5)
   awesome_print
   coffee-rails (~> 4.0.0)
+  factory_girl
   font-awesome-rails
   httparty
   jbuilder (~> 1.2)

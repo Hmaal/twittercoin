@@ -5,7 +5,7 @@ module Tweet::Runner
 
     handler = Tweet::Handler.new(tweet: nil, screen_name: nil, status_id: nil)
 
-    handler.save_tweet
+    handler.save_parsed_tweet
     handler.find_user(sender)
 
     # Short Circuit if Invalid
