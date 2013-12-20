@@ -6,22 +6,22 @@
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
-user = User.create({
-  screen_name: "McTestor",
-  authenticated: true,
-  api_user_id_str: "2253000787"
-})
+# user = User.create({
+#   screen_name: "McTestor",
+#   authenticated: true,
+#   api_user_id_str: "2253000787"
+# })
 
-user2 = User.create({
-  screen_name: "JimmyMcTester",
-  authenticated: true,
-  api_user_id_str: "31232132131"
-})
+# user2 = User.create({
+#   screen_name: "JimmyMcTester",
+#   authenticated: true,
+#   api_user_id_str: "31232132131"
+# })
 
-user.tips_given.create({
-  content: "asdfasdfsadf",
-  api_tweet_id_str: 123123123,
-  recipient_id: user2.id,
-  sender_id: user.id,
-  transaction_id: nil
-})
+# user.tips_given.create({
+#   content: "asdfasdfsadf",
+#   api_tweet_id_str: 123123123,
+#   recipient_id: user2.id,
+#   sender_id: user.id,
+#   transaction_id: nil
+# })

@@ -47,28 +47,29 @@ class Tweet::Handler
 
   # Checks Validity and builds sender reply
   def check_validity
-    if @parsed_tweet.info[:amount].zero?
-      @sender_reply = Tweet::Message::Invalid.zero_amount(@recipient) and return
+    # Check user should be first
+    if !@sender_user
+      @sender_reply = Tweet::Message::Invalid.no_account(@sender) and return
+    end
+
+    if !@sender_user.enough_balance?
+      @sender_reply = Tweet::Message::Invalid.not_enough_balance(@sender) and return
+    end
+
+    if @parsed_tweet.info[:amount] && @parsed_tweet.info[:amount].zero?
+      @sender_reply = Tweet::Message::Invalid.zero_amount(@sender) and return
     end
 
     if @parsed_tweet.direct_tweet?
-      @sender_reply = Tweet::Message::Invalid.direct_tweet(@recipient) and return
-    end
-
-    if !@sender_user
-      @sender_reply = Tweet::Message::Invalid.no_account(@recipient) and return
-    end
-
-    if @sender_user.enough_balance?
-      @sender_reply = Tweet::Message::Invalid.not_enough_balance(@recipient) and return
+      @sender_reply = Tweet::Message::Invalid.direct_tweet(@sender) and return
     end
 
     if !@parsed_tweet.valid? # Other Unknown Error
-      @sender_reply = Tweet::Message::Invalid.unknown(@recipient) and return
+      @sender_reply = Tweet::Message::Invalid.unknown(@sender) and return
     end
 
     @sender_reply = Tweet::Message::Valid.sender(@recipient, @sender)
-    @value = true
+    @valid = true
   end
 
   def recipient_reply_build
