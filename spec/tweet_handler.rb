@@ -3,10 +3,11 @@ require 'spec_helper'
 # TODO: Occassionally clear VCR cache, and retest live
 describe Tweet::Handler, :vcr do
 
-  context "Valid Tweets:" do
+  let(:sender) { "McTestor" }
+  let(:status_id) { 2253000787 }
+
+  context "Basic Handling:" do
     let(:content) { "@JimmyMcTester, keep it up! Here's a tip 0.01 BTC @tippercoin" }
-    let(:sender) { "McTestor" }
-    let(:status_id) { 123456789 }
     let(:info) {
       {
         recipient: "JimmyMcTester",
@@ -50,20 +51,8 @@ describe Tweet::Handler, :vcr do
       expect(@handler.recipient_user.addresses.first).to_not eq(nil)
     end
 
-    context "Validity" do
-      it "should have valid false by default" do
-        expect(@handler.valid).to eq(false)
-      end
-
-      it "should build a valid sender reply message" do
-        expect(@handler.sender_reply).to include("@McTestor", "successful")
-      end
-
-      it "should build a valid recipient reply message" do
-        @handler.find_or_create_recipient
-        @handler.recipient_reply_build
-        expect(@handler.recipient_reply).to include("@JimmyMcTester", "tipped")
-      end
+    it "should have valid false by default" do
+      expect(@handler.valid).to eq(false)
     end
 
     # How to effectively test API?
@@ -76,63 +65,101 @@ describe Tweet::Handler, :vcr do
 
   end
 
-
-  context "Invalid Tweets" do
-
-    let(:sender) { "McTestor" }
-    let(:status_id) { 123456789 }
-
-    it "should save the tweet in db"
-
-    it "should return invalid if no user" do
-      ap User.where(screen_name: sender).destroy_all
-
-      expect(@handler.sender_user).to eq(nil)
-      expect(@handler.valid?).to eq(false)
-    end
-
+  context "Check Validity" do
 
     it "should, if no account, build the error message" do
-      tweet = "JimmyMcTester, 0.001 BTC, @tippercoin"
+      content = "@JimmyMcTester, 0.001 BTC, @tippercoin"
       handler = Tweet::Handler.new(
-        tweet: tweet,
+        content: content,
         sender: sender,
         status_id: status_id)
 
-      handler.find_user(sender)
-      handler.sender_reply_build
-      expect(handler.sender_reply).to include("authenticate", "deposit")
+      handler.check_validity
+      expect(handler.valid).to eq(false)
+      expect(handler.sender_reply).to include("authenticate", "deposit", sender)
     end
 
-    it "should, if not enough balance, build the error message" do
-      tweet = "JimmyMcTester, 1 BTC, @tippercoin"
-      handler = Tweet::Handler.new(
-        tweet: tweet,
-        sender: sender,
-        status_id: status_id)
-
-      handler.find_user(sender)
-      handler.sender_reply_build
-      expect(handler.sender_reply).to include("top up")
-    end
 
     it "should, if 0 amount, build the error message" do
-      tweet = "JimmyMcTester, 1 BTC, @tippercoin"
+      content = "@JimmyMcTester, 0 BTC, @tippercoin"
+      create(:mctestor)
       handler = Tweet::Handler.new(
-        tweet: tweet,
+        content: content,
         sender: sender,
         status_id: status_id)
 
-      handler.find_user(sender)
-      handler.sender_reply_build
-      expect(handler.sender_reply).to include('tip', 'more')
+      handler.check_validity
+      expect(handler.valid).to eq(false)
+      expect(handler.sender_reply).to include('tip', 'more', sender)
     end
 
-    it "should, if direct tweet, build the error message"
+    it "should, if direct tweet, build the error message" do
+      content = "@tippercoin, 1 BTC, @otherdude"
+      create(:mctestor)
+      handler = Tweet::Handler.new(
+        content: content,
+        sender: sender,
+        status_id: status_id)
 
-    it "should, otherwise, build a generic error message"
+      handler.check_validity
+      expect(handler.valid).to eq(false)
+      expect(handler.sender_reply).to include('someone', 'else', sender)
+    end
 
-    it "should reply to sender the error message to sender"
+    # TODO: Mock this!
+    it "should, if not enough balance, build the error message" do
+      content = "@JimmyMcTester, 1 BTC, @tippercoin"
+      create(:mctestor)
+      handler = Tweet::Handler.new(
+        content: content,
+        sender: sender,
+        status_id: status_id)
+
+      handler.check_validity
+      expect(handler.valid).to eq(false)
+      expect(handler.sender_reply).to include("top", "up")
+    end
+
+    it "should, otherwise, build a generic error message" do
+      content = "Does this actually work @tippercoin"
+      create(:mctestor)
+      handler = Tweet::Handler.new(
+        content: content,
+        sender: sender,
+        status_id: status_id)
+
+      handler.check_validity
+      expect(handler.valid).to eq(false)
+      expect(handler.sender_reply).to include("not", "meant")
+    end
+
+    it "should build a valid sender reply message" do
+      create(:mctestor)
+      content = "@JimmyMcTester, 0.001 BTC, @tippercoin"
+      handler = Tweet::Handler.new(
+        content: content,
+        sender: sender,
+        status_id: status_id)
+
+      handler.check_validity
+      expect(handler.valid).to eq(true)
+      expect(handler.sender_reply).to include("@McTestor", "successful")
+    end
+
+    it "should build a valid recipient reply message" do
+      content = "@JimmyMcTester, 0.001 BTC, @tippercoin"
+      create(:mctestor)
+      handler = Tweet::Handler.new(
+        content: content,
+        sender: sender,
+        status_id: status_id)
+
+      handler.check_validity
+      expect(handler.valid).to eq(true)
+      handler.find_or_create_recipient
+      handler.recipient_reply_build
+      expect(handler.recipient_reply).to include("@JimmyMcTester", "tipped")
+    end
 
   end
 

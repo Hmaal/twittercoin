@@ -50,11 +50,3 @@ test:
   pool: 5
   username: twittercoin
   password:
-
-production:
-  adapter: postgresql
-  encoding: unicode
-  database: twittercoin_production
-  pool: 5
-  username: twittercoin
-  password:

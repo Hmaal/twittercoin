@@ -24,23 +24,24 @@ module Tweet::Message
       "make a deposit, and then try again. #{link}"
     end
 
-    def not_enough_balance
-      link = "tippercoin.com/#/account/deposit?amount=#{amount}"
-      "Hi @#{sender}, please top up on your account with "\
-      "#{amount / SATOSHIS} BTC before sending this tip. #{link}"
+    def not_enough_balance(sender)
+      # TODO: Include link with amount
+
+      link = "tippercoin.com/#/account/deposit"
+      "Hi @#{sender}, please top up on your account before sending this tip. #{link}"
     end
 
-    def zero_amount
+    def zero_amount(sender)
       link = "tippercoin.com/#/documentation"
       "Hi @#{sender}, please tip 0.001 BTC or more. Refer to #{link}"
     end
 
-    def direct_tweet
+    def direct_tweet(sender)
       link = "tippercoin.com/#/documentation"
-      "Hi @#{sender}, sorry, I'm not sure what you meant :s. Please refer to #{link}"
+      "Hi @#{sender}, please try tipping someone else. Refer to #{link}"
     end
 
-    def unknown
+    def unknown(sender)
       link = "tippercoin.com/#/documentation"
       "Hi @#{sender}, sorry, I'm not sure what you meant :s. Please refer to #{link}"
     end

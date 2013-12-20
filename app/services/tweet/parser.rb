@@ -26,7 +26,7 @@ class Tweet::Parser
   end
 
   def direct_tweet?
-    @mentions.first == BOT
+    @mentions.first == BOT && @content[0] == "@"
   end
 
   def multiple_recipients?
