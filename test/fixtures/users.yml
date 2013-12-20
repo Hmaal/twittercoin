@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  screen_name: MyString
+  authenticated: false
+  api_user_id_str: MyString
+
+two:
+  screen_name: MyString
+  authenticated: false
+  api_user_id_str: MyString

@@ -1,14 +1,23 @@
-### DSL
+### Creating
+User.exists?(screen_name: "screenname")
+
+# if False
+
+@user = User.create({
+  screen_name: "screenname",
+  authenticated: true,
+  api_user_id_str: 123456789
+})
+
+# if True
+
 @user = User.where(screen_name: "screenname").first
 
-@tweet = @user.tweets.new({
-  content: tweet,
-  mentions: parsed_tweet.mentions
-  amounts: parsed_tweet.amounts,
-  unit: parsed_tweet.unit
-  sender: parsed_tweet.sender
-  valid: parsed_tweet.valid?
-  api_tweet_id: tweet.id
+@tweet = @user.tweet_tips.new({
+  content: content,
+  sender_id: parsed_tweet.sender,
+  recipient_id: parsed_tweet.sender
+  api_tweet_id_str: tweet.id
 })
 
 @tweet.save
@@ -20,18 +29,18 @@
 
 })
 
-@user.tweets
+@user.tweet_tips
 
-### Profile Page
+### Profile Page Retrieving
 
 @user = User.where(screen_name: "screenname").first
 @user.screen_name
 @user.authenticated
 
 # from API
-@user.description
-@user.avatar_large
-@user.avatar_small
+@user.get_description
+@user.get_avatar_large
+@user.get_avatar_small
 
 # Should return
 @tips = @user.tips
@@ -39,25 +48,27 @@
 @tips.total_received
 @tips.total_given
 
-@tips.each do |tip|
-  tip.sender.screen_name
-  tip.sender.avatar_small
-  tip.sender.avatar_large
-  tip.sender.address.public_key
+@tips.each do |tweet_tip|
+  tweet_tip.sender.screen_name
+  tweet_tip.sender.full_name
+  tweet_tip.sender.avatar_small
+  tweet_tip.sender.avatar_large
+  tweet_tip.sender.address.public_key
 
-  tip.received?
-  tip.given?
+  tweet_tip.received?
+  tweet_tip.given?
 
-  tip.transaction.tx_hash
+  tweet_tip.transaction.tx_hash
 
-  tip.recipient.screen_name
-  tip.recipient.avatar_small
-  tip.recipient.avatar_large
-  tip.recipient.address.public_key
+  tweet_tip.recipient.screen_name
+  tweet_tip.recipient.full_name
+  tweet_tip.recipient.avatar_small
+  tweet_tip.recipient.avatar_large
+  tweet_tip.recipient.address.public_key
 
-  tip.satoshis
-  tip.amount
-  tip.unit
+  tweet_tip.satoshis
+  tweet_tip.amount
+  tweet_tip.unit
 
-  tip.tweet.get_link
+  tweet_tip.tweet.get_link
 end

@@ -22,14 +22,14 @@ describe User do
     end
 
     it "should create tips" do
-      @user.tips.create({
+      @user.tweet_tips.create({
         amount: 1000000,
         tweet_id: @tweet.id,
         recipient_id: 12
 
       })
 
-      expect(@user.tips.count).to eq(1)
+      expect(@user.tweet_tips.count).to eq(1)
     end
 
     it "should perform validations"
@@ -65,22 +65,23 @@ describe User do
       before(:each) do
         # Factory some tips
 
-        @tips = @user.tips
+        @tweet_tips = @user.tweet_tips
 
-        @first_tip = @tips.first
+        @first_tip = @tweet_tips.first
       end
 
       it "should build tips object" do
-        expect(@tips).to_not be_blank
+        expect(@tweet_tips).to_not be_blank
       end
 
       it "should build total tips" do
-        expect(@tips.total_received).to eq(1_000_000)
-        expect(@tips.total_given).to eq(2_000_000)
+        expect(@tweet_tips.total_received).to eq(1_000_000)
+        expect(@tweet_tips.total_given).to eq(2_000_000)
       end
 
       it "should build sender information" do
         expect(@first_tip.sender.screen_name).to eq("JimmyMcTester")
+        expect(@first_tip.sender.full_name).to eq()
         expect(@first_tip.sender.avatar_small).to eq("")
         expect(@first_tip.sender.avatar_large).to eq("")
         expect(@first_tip.sender.address.public_key).to eq("")
@@ -89,6 +90,7 @@ describe User do
 
       it "should build recipient information" do
         expect(@first_tip.recipient.screen_name).to eq()
+        expect(@first_tip.recipient.full_name).to eq()
         expect(@first_tip.recipient.avatar_small).to eq()
         expect(@first_tip.recipient.avatar_large).to eq()
         expect(@first_tip.recipient.address.public_key).to eq()

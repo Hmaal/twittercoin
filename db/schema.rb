@@ -11,25 +11,51 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131218234949) do
+ActiveRecord::Schema.define(version: 20131220014726) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "delayed_jobs", force: true do |t|
-    t.integer  "priority",   default: 0, null: false
-    t.integer  "attempts",   default: 0, null: false
-    t.text     "handler",                null: false
-    t.text     "last_error"
-    t.datetime "run_at"
-    t.datetime "locked_at"
-    t.datetime "failed_at"
-    t.string   "locked_by"
-    t.string   "queue"
+  create_table "addresses", force: true do |t|
+    t.string   "encrypted_private_key", null: false
+    t.string   "public_key",            null: false
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+  add_index "addresses", ["encrypted_private_key"], name: "index_addresses_on_encrypted_private_key", using: :btree
+  add_index "addresses", ["public_key"], name: "index_addresses_on_public_key", using: :btree
+
+  create_table "transactions", force: true do |t|
+    t.integer  "satoshis",     null: false
+    t.string   "tx_hash",      null: false
+    t.integer  "tweet_tip_id"
+    t.integer  "address_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "tweet_tips", force: true do |t|
+    t.string   "content",          null: false
+    t.string   "api_tweet_id_str"
+    t.integer  "recipient_id"
+    t.integer  "sender_id"
+    t.integer  "transaction_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "tweet_tips", ["content"], name: "index_tweet_tips_on_content", using: :btree
+
+  create_table "users", force: true do |t|
+    t.string   "screen_name"
+    t.boolean  "authenticated",   default: false
+    t.string   "api_user_id_str"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "users", ["screen_name"], name: "index_users_on_screen_name", using: :btree
 
 end

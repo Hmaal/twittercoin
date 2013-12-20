@@ -56,7 +56,7 @@ class Tweet::Handler
     TWITTER_CLIENT.update(@recipient_reply, in_reply_to_status_id: @status_id)
   end
 
-  def save_tweet
+  def save_parsed_tweet
     Rails.logger.info("Writing tweet into DB")
     @sender_user = nil
   end

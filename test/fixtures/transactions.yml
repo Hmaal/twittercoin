@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  satoshis: 1
+  tx_hash: MyString
+  tweet_tip_id: 1
+  address_id: 1
+  user_id: 1
+
+two:
+  satoshis: 1
+  tx_hash: MyString
+  tweet_tip_id: 1
+  address_id: 1
+  user_id: 1
