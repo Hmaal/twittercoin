@@ -34,7 +34,7 @@ module Tweet::Extractor
         satoshify: Proc.new {|n| (n.to_f * SATOSHIS).to_i}
       },
       {
-        name: :BTC_SUFFIX,
+        name: :bitcoin_SUFFIX,
         regex: /(\d*.?\d*)\s?bitcoin/i,
         satoshify: Proc.new {|n| (n.to_f * SATOSHIS).to_i}
       },
