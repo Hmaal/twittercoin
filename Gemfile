@@ -35,7 +35,7 @@ gem 'puma'
 
 gem 'pusher'
 
-group :development do
+group :development, :test do
 	gem 'pry-rails'
 end
 
