@@ -19,13 +19,13 @@ ActiveRecord::Schema.define(version: 20131220014726) do
   create_table "addresses", force: true do |t|
     t.string   "encrypted_private_key"
     t.string   "public_key"
+    t.string   "address"
     t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
-  add_index "addresses", ["encrypted_private_key"], name: "index_addresses_on_encrypted_private_key", using: :btree
-  add_index "addresses", ["public_key"], name: "index_addresses_on_public_key", using: :btree
+  add_index "addresses", ["address"], name: "index_addresses_on_address", using: :btree
 
   create_table "transactions", force: true do |t|
     t.integer  "satoshis"
