@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
   has_many :addresses
 
-  validates :screen_name, uniqueness: { case_insensitive: false }, presence: true
+  validates :screen_name, uniqueness: { case_sensitive: false }, presence: true
   validates :api_user_id_str, uniqueness: true, presence: true
 
 

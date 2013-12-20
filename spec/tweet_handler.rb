@@ -163,4 +163,26 @@ describe Tweet::Handler, :vcr do
 
   end
 
+  context "Edge Cases" do
+    it "should search for screen_name regardless of casing" do
+      create(:mctestor)
+      # This is lowercase, twitter api actually return titleized
+      content = "@mctestor, 0.0001 BTC @tippercoin"
+      handler = Tweet::Handler.new(
+        content: content,
+        sender: sender,
+        status_id: status_id)
+
+      expect(handler.recipient_user).to_not eq(nil)
+      expect(handler.recipient_user.screen_name).to eq("McTestor")
+    end
+
+    it "should not duplicate users when screen_names have different casing" do
+      user = build(:mctestor)
+      expect(user.save).to eq(true)
+      user2 = build(:mctestor_lower)
+      expect(user2.save).to eq(false)
+    end
+  end
+
 end

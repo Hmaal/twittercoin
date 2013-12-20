@@ -1,3 +1,5 @@
+require 'dotenv/tasks'
+
 namespace :twitter do
 
   desc "Everything"
@@ -11,7 +13,8 @@ namespace :twitter do
 
           case object
           when Twitter::Tweet
-            ap "\"#{object.text}\" - #{object.user.screen_name}"
+            ap "TWEET: #{object.text}"
+            ap "SENDER: @#{object.user.screen_name}"
 
             Tweet::Runner.execute(
               content: object.text,
@@ -21,14 +24,16 @@ namespace :twitter do
           when Twitter::DirectMessage
             ap "DM Received"
           when Twitter::Streaming::StallWarning
-            warn "Falling behind!"
+            ap "Falling behind!"
+            # TODO: PagerDuty
           else
             # TODO: Handle HTTP 420 error code
             # Means there's too many connections
             # rescue?
           end
-        rescue Exception => e
-          ap e
+        rescue => e
+          puts e.inspect
+          puts e.backtrace
           # TODO: PagerDuty
         end
 

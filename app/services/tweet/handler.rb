@@ -26,7 +26,7 @@ class Tweet::Handler
 
   # Returns ActiveRecord Object, or nil
   def find_user(screen_name)
-    User.where(screen_name: screen_name).first
+    User.where("screen_name ILIKE ?", "%#{screen_name}%").first
   end
 
   def create_user(screen_name)

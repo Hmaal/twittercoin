@@ -35,3 +35,5 @@ gem 'twitter'
 gem 'puma'
 
 gem 'pusher'
+
+gem 'dotenv'
