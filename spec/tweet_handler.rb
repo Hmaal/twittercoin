@@ -1,65 +1,74 @@
 require 'spec_helper'
 
+# TODO: Occassionally clear VCR cache, and retest live
 describe Tweet::Handler, :vcr do
 
   context "Valid Tweets:" do
-    let(:tweet) { "@recipient, keep it up! Here's a tip 0.01 BTC @tippercoin" }
-    let(:sender) { "@sender" }
+    let(:content) { "@JimmyMcTester, keep it up! Here's a tip 0.01 BTC @tippercoin" }
+    let(:sender) { "McTestor" }
     let(:status_id) { 123456789 }
     let(:info) {
       {
-        recipient: "@recipient",
+        recipient: "JimmyMcTester",
         amount: 1_000_000,
-        sender: "@sender"
+        sender: "McTestor"
       }
     }
 
     before(:each) do
+      @user = create(:mctestor)
+
       @handler = Tweet::Handler.new(
-        tweet: tweet,
+        content: content,
         sender: sender,
         status_id: status_id)
-
-
-      @handler.find_or_create_sender
     end
 
-    it "should have tweet, sender and parsed tweet" do
-      expect(@handler.tweet).to eq(tweet)
+    it "should have content, sender and parsed tweet" do
+      expect(@handler.content).to eq(content)
       expect(@handler.sender).to eq(sender)
       expect(@handler.status_id).to eq(status_id)
       expect(@handler.parsed_tweet.info).to eq(info)
-      expect(@handler.recipient).to eq('@recipient')
+      expect(@handler.recipient).to eq('JimmyMcTester')
     end
 
-    it "should determine whether tweet is valid" do
-      # No User
-      expect(@handler.valid?).to eq(true)
+    it "should save the tweet in db regardless" do
+      expect(TweetTip.count).to eq(0)
+      expect(@handler.save_tweet_tip).to eq(true)
+      expect(TweetTip.count).to eq(1)
     end
 
-    it "should save the tweet in db" do
-      expect(Tweet.count).to be(0)
-      @handler.save_tweet
-      expect(Tweet.count).to be(1)
+    it "should create recipient if recipient not found in db" do
+      expect(User.count).to eq(1)
+      @handler.find_or_create_recipient
+      expect(@handler.recipient_user.screen_name).to eq("JimmyMcTester")
+      expect(User.count).to eq(2)
     end
 
-    it "should try to find recipient in db"
-
-    it "should create recipient if recipient not found in db"
-
-    it "should build a valid sender reply message" do
-      @handler.sender_reply_build
-      expect(@handler.sender_reply).to include("successful")
+    it "should create a new bitcoin address for new recipients" do
+      @handler.find_or_create_recipient
+      expect(@handler.recipient_user.addresses.first).to_not eq(nil)
     end
 
-    it "should build a valid recipient reply message" do
-      @handler.recipient_reply_build
-      expect(@handler.recipient_reply).to include("@recipient", "tipped")
-    end
+    context "Validity" do
+      it "should have valid false by default" do
+        expect(@handler.valid).to eq(false)
+      end
 
-    it "should push a transaction"
+      it "should build a valid sender reply message" do
+        expect(@handler.sender_reply).to include("@McTestor", "successful")
+      end
+
+      it "should build a valid recipient reply message" do
+        @handler.find_or_create_recipient
+        @handler.recipient_reply_build
+        expect(@handler.recipient_reply).to include("@JimmyMcTester", "tipped")
+      end
+    end
 
     # How to effectively test API?
+
+    it "should push a transaction"
 
     it "should reply to sender"
 
@@ -70,13 +79,21 @@ describe Tweet::Handler, :vcr do
 
   context "Invalid Tweets" do
 
-    let(:sender) { "@sender" }
+    let(:sender) { "McTestor" }
     let(:status_id) { 123456789 }
 
     it "should save the tweet in db"
 
+    it "should return invalid if no user" do
+      ap User.where(screen_name: sender).destroy_all
+
+      expect(@handler.sender_user).to eq(nil)
+      expect(@handler.valid?).to eq(false)
+    end
+
+
     it "should, if no account, build the error message" do
-      tweet = "@sender, 0.001 BTC, @tippercoin"
+      tweet = "JimmyMcTester, 0.001 BTC, @tippercoin"
       handler = Tweet::Handler.new(
         tweet: tweet,
         sender: sender,
@@ -88,7 +105,7 @@ describe Tweet::Handler, :vcr do
     end
 
     it "should, if not enough balance, build the error message" do
-      tweet = "@sender, 1 BTC, @tippercoin"
+      tweet = "JimmyMcTester, 1 BTC, @tippercoin"
       handler = Tweet::Handler.new(
         tweet: tweet,
         sender: sender,
@@ -100,7 +117,7 @@ describe Tweet::Handler, :vcr do
     end
 
     it "should, if 0 amount, build the error message" do
-      tweet = "@sender, 1 BTC, @tippercoin"
+      tweet = "JimmyMcTester, 1 BTC, @tippercoin"
       handler = Tweet::Handler.new(
         tweet: tweet,
         sender: sender,

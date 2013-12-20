@@ -1,29 +1,52 @@
 class Tweet::Handler
 
-  attr_accessor :tweet, :sender, :recipient,
+  attr_accessor :content, :sender, :recipient,
   :sender_reply, :recipient_reply, :recipient_user, :sender_user,
   :status_id, :parsed_tweet, :valid
 
-  def initialize(tweet: nil, sender: nil, status_id: nil)
-    @tweet = tweet
+  def initialize(content: nil, sender: nil, status_id: nil)
+    @content = content
     @sender = sender
     @status_id = status_id
-    @parsed_tweet = Tweet::Parser.new(@tweet, @sender)
+    @parsed_tweet = Tweet::Parser.new(@content, @sender)
     @recipient = @parsed_tweet.info[:recipient]
+    @sender_user = find_user(@sender)
+    @recipient_user = find_user(@recipient)
+    @valid = false
   end
 
-  def valid?
-    return false if !@parsed_tweet.valid?
-    return false if !@sender_user # TODO: Check against ActiveRecord
+  def save_tweet_tip
+    @tweet_tip = TweetTip.new({
+      content: @content,
+      api_tweet_id_str: @status_id
+    })
 
-    return true
+    @tweet_tip.save
   end
 
-  def sender_reply_build
-    if valid?
-      @sender_reply = Tweet::Message::Valid.sender(@recipient, @sender) and return
-    end
+  # Returns ActiveRecord Object, or nil
+  def find_user(screen_name)
+    User.where(screen_name: screen_name).first
+  end
 
+  def create_user(screen_name)
+    result = TwitterSearch.new(screen_name)
+    user = User.create({
+      screen_name: result.screen_name,
+      authenticated: false,
+      api_user_id_str: result.api_user_id_str
+    })
+    user.addresses.create(BitcoinAPI.generate_address)
+
+    return user
+  end
+
+  def find_or_create_recipient
+    @recipient_user ||= create_user(@recipient)
+  end
+
+  # Checks Validity and builds sender reply
+  def check_validity
     if @parsed_tweet.info[:amount].zero?
       @sender_reply = Tweet::Message::Invalid.zero_amount(@recipient) and return
     end
@@ -40,7 +63,12 @@ class Tweet::Handler
       @sender_reply = Tweet::Message::Invalid.not_enough_balance(@recipient) and return
     end
 
-    @sender_reply = Tweet::Message::Invalid.unknown(@recipient)
+    if !@parsed_tweet.valid? # Other Unknown Error
+      @sender_reply = Tweet::Message::Invalid.unknown(@recipient) and return
+    end
+
+    @sender_reply = Tweet::Message::Valid.sender(@recipient, @sender)
+    @value = true
   end
 
   def recipient_reply_build
@@ -54,34 +82,6 @@ class Tweet::Handler
 
   def recipient_reply_deliver
     TWITTER_CLIENT.update(@recipient_reply, in_reply_to_status_id: @status_id)
-  end
-
-  def save_parsed_tweet
-    Rails.logger.info("Writing tweet into DB")
-    @sender_user = nil
-  end
-
-  def find_or_create_sender
-    @sender_user = find_user(@sender) || create_user(@sender)
-  end
-
-  def find_or_create_recipient
-    @recipient_user = find_user(@recipient) || create_user(@recipient)
-  end
-
-  # Returns ActiveRecord Object, or nil
-  def find_user(screen_name)
-    # User.where(screen_name: screen_name)
-  end
-
-  def create_user(screen_name)
-    ## New @recipient
-    # TwitterSearch.new(screen_name)
-
-    # Rails.logger.info("Generating new Bitcoin address")
-    # BitcoinAPI.generate_address
-
-    # Rails.logger.info("Writing new @recipient into DB")
   end
 
   def push_tx

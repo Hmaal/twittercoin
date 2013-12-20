@@ -8,4 +8,7 @@ class Address < ActiveRecord::Base
   validates :public_key, presence: true, uniqueness: true
   validates :user_id, presence: true
 
+  ### TODO: validate public/private keys
+
+
 end

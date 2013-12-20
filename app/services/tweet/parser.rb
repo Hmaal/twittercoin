@@ -1,14 +1,14 @@
 class Tweet::Parser
 
-  attr_accessor :tweet, :sender, :info, :mentions, :amounts
+  attr_accessor :content, :sender, :info, :mentions, :amounts
 
-  BOT = "@tippercoin"
+  BOT = "tippercoin"
 
-  def initialize(tweet, sender)
-    @tweet = tweet
+  def initialize(content, sender)
+    @content = content
     @sender = sender
-    @mentions = Tweet::Extractor::Mentions.parse(@tweet)
-    @amounts = Tweet::Extractor::Amounts.parse(@tweet)
+    @mentions = Tweet::Extractor::Mentions.parse(@content)
+    @amounts = Tweet::Extractor::Amounts.parse(@content)
 
     @info = {
       recipient: @mentions.first,

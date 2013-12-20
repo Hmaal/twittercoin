@@ -4,8 +4,8 @@ module Tweet::Extractor
 
     # Accept: String
     # Returns: Array or Strings, or nil
-    def parse(tweet)
-      usernames = tweet.scan(/(@\w+)/).flatten
+    def parse(content)
+      usernames = content.scan(/@(\w+)/).flatten
       return [nil] if usernames.blank?
       return usernames
     end
@@ -77,11 +77,11 @@ module Tweet::Extractor
 
     # Accept: String
     # Returns: Array of Integers, or nil
-    def parse(tweet)
+    def parse(content)
 
       # Parse all and loop until first symbol is valid
       # See order at top
-      parse_all(tweet).each do |p|
+      parse_all(content).each do |p|
         values = p.values.flatten
         return values if !values.empty?
       end
@@ -92,9 +92,9 @@ module Tweet::Extractor
 
     # Accept: String
     # Returns: Array of hashes, hash has key and array
-    def parse_all(tweet)
+    def parse_all(content)
       SYMBOLS.map do |sym|
-        raw = tweet.scan(sym[:regex]).flatten
+        raw = content.scan(sym[:regex]).flatten
         {
           sym[:name] => raw.map do |r|
             sym[:satoshify].call(r) if r.is_number?

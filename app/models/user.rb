@@ -6,12 +6,21 @@ class User < ActiveRecord::Base
 
   has_many :addresses
 
-  validates :screen_name, uniqueness: true, presence: true
+  validates :screen_name, uniqueness: { case_insensitive: false }, presence: true
   validates :api_user_id_str, uniqueness: true, presence: true
 
 
   def all_tips
     self.tips_received + self.tips_given
+  end
+
+  # TODO
+  def balance
+    BitcoinAPI.get_balance(user.addresses.first.public_key)
+  end
+
+  def enough_balance?
+    return false
   end
 
 end
