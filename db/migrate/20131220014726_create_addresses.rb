@@ -4,7 +4,7 @@ class CreateAddresses < ActiveRecord::Migration
       t.string :encrypted_private_key
       t.string :public_key
       t.string :address
-      t.integer :user_id
+      t.references :user
 
       t.timestamps
     end
