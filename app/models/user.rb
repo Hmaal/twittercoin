@@ -19,8 +19,9 @@ class User < ActiveRecord::Base
     BitcoinAPI.get_balance(user.addresses.first.public_key)
   end
 
+  # TODO: mock this
   def enough_balance?
-    return false
+    return true
   end
 
 end
