@@ -8,7 +8,7 @@ FactoryGirl.define do
     end
 
     factory :jimmy_mctester, aliases: [:recipient] do
-      screen_name 'JimmyMcTestor'
+      screen_name 'JimmyMcTester'
       api_user_id_str "2253000787123"
     end
 
