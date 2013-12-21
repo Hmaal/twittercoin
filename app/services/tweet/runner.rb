@@ -19,7 +19,7 @@ module Tweet::Runner
 
     # Short Circuit if Invalid
     if !handler.valid
-      ap 'invalid, sending reply ...'
+      ap 'invalid, buildling/deliver reply ...'
       handler.reply_build
       handler.reply_deliver
       return
@@ -31,7 +31,7 @@ module Tweet::Runner
     ap 'pushing tx ...'
     handler.push_tx
 
-    ap 'delivering reply to recipient ...'
+    ap 'building/delivering reply ...'
     handler.reply_build
     handler.reply_deliver
 
