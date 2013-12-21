@@ -34,11 +34,11 @@ class User < ActiveRecord::Base
   # TODO: Twitter Auth
   def self.create_profile(screen_name, authenticated: true)
     user = User.find_or_create_by(screen_name: screen_name)
-    result = TwitterSearch.new(screen_name)
+    result = TipperClient.search_user(screen_name)
 
-    user.screen_name = result.screen_name
+    user.screen_name = result[:screen_name]
     user.authenticated = authenticated
-    user.api_user_id_str = result.api_user_id_str
+    user.api_user_id_str = result[:api_user_id_str]
     user.save
 
     user.addresses.create(BitcoinAPI.generate_address)
