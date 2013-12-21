@@ -7,5 +7,6 @@ class TweetTip < ActiveRecord::Base
   has_one :transaction
 
   validates :content, presence: true, uniqueness: true
+  validates :screen_name, presence: true
 
 end

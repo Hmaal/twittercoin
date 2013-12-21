@@ -37,6 +37,9 @@ describe Tweet::Handler, :vcr do
       expect(TweetTip.count).to eq(0)
       expect(@handler.save_tweet_tip).to eq(true)
       expect(TweetTip.count).to eq(1)
+      tweet_tip = TweetTip.last
+      expect(tweet_tip.screen_name).to eq(sender)
+      expect(tweet_tip.content).to eq(content)
     end
 
     it "should create recipient if recipient not found in db" do

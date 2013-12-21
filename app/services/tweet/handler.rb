@@ -18,7 +18,8 @@ class Tweet::Handler
   def save_tweet_tip
     @tweet_tip = TweetTip.new({
       content: @content,
-      api_tweet_id_str: @status_id
+      api_tweet_id_str: @status_id,
+      screen_name: @sender
     })
 
     @tweet_tip.save
