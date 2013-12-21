@@ -17,7 +17,7 @@ module Tweet::Message
   module Invalid
     extend self
 
-    def no_account(sender)
+    def unauthenticated(sender)
       link = "tippercoin.com/authenticate?user=#{sender}&r=#{rand}"
       "Hi @#{sender}, to send tips, please authenticate via twitter, "\
       "make a deposit, and then try again. #{link}"

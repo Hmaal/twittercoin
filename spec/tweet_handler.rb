@@ -17,20 +17,34 @@ describe Tweet::Handler, :vcr do
     }
 
     before(:each) do
-      @user = create(:mctestor)
-
       @handler = Tweet::Handler.new(
         content: content,
         sender: sender,
         status_id: status_id)
     end
 
-    it "should have content, sender and parsed tweet" do
+    it "should have content, sender" do
       expect(@handler.content).to eq(content)
       expect(@handler.sender).to eq(sender)
       expect(@handler.status_id).to eq(status_id)
+    end
+
+    it "should parse the tweet" do
       expect(@handler.parsed_tweet.info).to eq(info)
       expect(@handler.recipient).to eq('JimmyMcTester')
+    end
+
+    it "should have valid false by default" do
+      expect(@handler.valid).to eq(false)
+    end
+
+    it "should, find/create sender_user and recipient_user" do
+      expect(@handler.sender_user.screen_name).to eq(sender)
+      expect(@handler.recipient_user.screen_name).to eq("JimmyMcTester")
+    end
+
+    it "should create a new bitcoin address for new recipients" do
+      expect(@handler.recipient_user.addresses.first).to_not eq(nil)
     end
 
     it "should save the tweet in db regardless" do
@@ -40,22 +54,6 @@ describe Tweet::Handler, :vcr do
       tweet_tip = TweetTip.last
       expect(tweet_tip.screen_name).to eq(sender)
       expect(tweet_tip.content).to eq(content)
-    end
-
-    it "should create recipient if recipient not found in db" do
-      expect(User.count).to eq(1)
-      @handler.find_or_create_recipient
-      expect(@handler.recipient_user.screen_name).to eq("JimmyMcTester")
-      expect(User.count).to eq(2)
-    end
-
-    it "should create a new bitcoin address for new recipients" do
-      @handler.find_or_create_recipient
-      expect(@handler.recipient_user.addresses.first).to_not eq(nil)
-    end
-
-    it "should have valid false by default" do
-      expect(@handler.valid).to eq(false)
     end
 
     # How to effectively test API?
@@ -69,6 +67,7 @@ describe Tweet::Handler, :vcr do
   context "Check Validity" do
 
     it "should, if no account, build the error message" do
+      User.create_profile("McTestor", authenticated: false)
       content = "@JimmyMcTester, 0.001 BTC, @tippercoin"
       handler = Tweet::Handler.new(
         content: content,
@@ -84,7 +83,6 @@ describe Tweet::Handler, :vcr do
 
     it "should, if 0 amount, build the error message" do
       content = "@JimmyMcTester, 0 BTC, @tippercoin"
-      create(:mctestor)
       handler = Tweet::Handler.new(
         content: content,
         sender: sender,
@@ -98,7 +96,6 @@ describe Tweet::Handler, :vcr do
 
     it "should, if direct tweet, build the error message" do
       content = "@tippercoin, 1 BTC, @otherdude"
-      create(:mctestor)
       handler = Tweet::Handler.new(
         content: content,
         sender: sender,
@@ -113,7 +110,6 @@ describe Tweet::Handler, :vcr do
     # TODO: Mock this!
     it "should, if not enough balance, build the error message" do
       content = "@JimmyMcTester, 1 BTC, @tippercoin"
-      create(:mctestor)
       handler = Tweet::Handler.new(
         content: content,
         sender: sender,
@@ -127,7 +123,6 @@ describe Tweet::Handler, :vcr do
 
     it "should, otherwise, build a generic error message" do
       content = "Does this actually work @tippercoin"
-      create(:mctestor)
       handler = Tweet::Handler.new(
         content: content,
         sender: sender,
@@ -141,7 +136,6 @@ describe Tweet::Handler, :vcr do
 
     it "should build a valid recipient reply message" do
       content = "@JimmyMcTester, 0.001 BTC, @tippercoin"
-      create(:mctestor)
       handler = Tweet::Handler.new(
         content: content,
         sender: sender,
@@ -150,14 +144,12 @@ describe Tweet::Handler, :vcr do
       handler.check_validity
       expect(handler.valid).to eq(true)
 
-      handler.find_or_create_recipient
       handler.reply_build
       expect(handler.reply).to include("@JimmyMcTester", "0.001", "tipped")
     end
 
-    it "should not include status_id in reply if invalid" do
+    it "should not include reply_id in reply if invalid" do
       content = "@JimmyMcTester, failure, @tippercoin"
-      create(:mctestor)
       handler = Tweet::Handler.new(
         content: content,
         sender: sender,
@@ -165,19 +157,17 @@ describe Tweet::Handler, :vcr do
 
       expect(handler.status_id).to_not eq(nil)
       handler.check_validity
+      expect(handler.state).to eq(:unknown)
       expect(handler.valid).to eq(false)
-      handler.reply_build
 
-      handler.find_or_create_recipient
       handler.reply_build
-      expect(handler.status_id).to eq(nil)
+      expect(handler.reply_id).to eq(nil)
     end
 
   end
 
   context "Edge Cases" do
     it "should search for screen_name regardless of casing" do
-      create(:mctestor)
       # This is lowercase, twitter api actually return titleized
       content = "@mctestor, 0.0001 BTC @tippercoin"
       handler = Tweet::Handler.new(
@@ -190,10 +180,46 @@ describe Tweet::Handler, :vcr do
     end
 
     it "should not duplicate users when screen_names have different casing" do
-      user = build(:mctestor)
+      user = User.new(screen_name: "McTestor", api_user_id_str: "1")
       expect(user.save).to eq(true)
-      user2 = build(:mctestor_lower)
-      expect(user2.save).to eq(false)
+      user_lower = User.new(screen_name: "mctestor", api_user_id_str: "2")
+      expect(user_lower.save).to eq(false)
+    end
+
+  end
+
+  context "User Addresses" do
+
+    it "should not find_profile is there is not address" do
+      User.create({
+        screen_name: sender,
+        api_user_id_str: "321"
+      })
+
+      user = User.find_profile(sender)
+      expect(user).to be(nil)
+    end
+
+    it "should create address for create_profile" do
+      User.create_profile(sender)
+      user = User.find_profile(sender)
+
+      expect(user.screen_name).to eq(sender)
+      expect(user.addresses.blank?).to eq(false)
+    end
+
+    it "should create address even if there is already a user" do
+      user = User.create({
+        screen_name: sender,
+        api_user_id_str: "321"
+      })
+
+      expect(user.addresses.blank?).to eq(true)
+
+      user = User.create_profile(sender)
+
+      expect(user.addresses.blank?).to eq(false)
+
     end
   end
 

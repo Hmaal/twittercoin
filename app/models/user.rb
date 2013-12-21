@@ -24,4 +24,25 @@ class User < ActiveRecord::Base
     return true
   end
 
+  def self.find_profile(screen_name)
+    user = User.where("screen_name ILIKE ?", "%#{screen_name}%").first
+    return if user.blank?
+    return if user.addresses.blank?
+    return user
+  end
+
+  # TODO: Twitter Auth
+  def self.create_profile(screen_name, authenticated: true)
+    user = User.find_or_create_by(screen_name: screen_name)
+    result = TwitterSearch.new(screen_name)
+
+    user.screen_name = result.screen_name
+    user.authenticated = authenticated
+    user.api_user_id_str = result.api_user_id_str
+    user.save
+
+    user.addresses.create(BitcoinAPI.generate_address)
+    return user
+  end
+
 end
