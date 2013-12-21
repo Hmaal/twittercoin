@@ -62,10 +62,6 @@ describe Tweet::Handler, :vcr do
 
     it "should push a transaction"
 
-    it "should reply to sender"
-
-    it "should reply to recipient"
-
     it "should reply to recipient"
 
   end
@@ -80,8 +76,9 @@ describe Tweet::Handler, :vcr do
         status_id: status_id)
 
       handler.check_validity
+      handler.reply_build
       expect(handler.valid).to eq(false)
-      expect(handler.sender_reply).to include("authenticate", "deposit", sender)
+      expect(handler.reply).to include("authenticate", "deposit", sender)
     end
 
 
@@ -94,8 +91,9 @@ describe Tweet::Handler, :vcr do
         status_id: status_id)
 
       handler.check_validity
+      handler.reply_build
       expect(handler.valid).to eq(false)
-      expect(handler.sender_reply).to include('tip', 'more', sender)
+      expect(handler.reply).to include('tip', 'more', sender)
     end
 
     it "should, if direct tweet, build the error message" do
@@ -107,8 +105,9 @@ describe Tweet::Handler, :vcr do
         status_id: status_id)
 
       handler.check_validity
+      handler.reply_build
       expect(handler.valid).to eq(false)
-      expect(handler.sender_reply).to include('someone', 'else', sender)
+      expect(handler.reply).to include('someone', 'else', sender)
     end
 
     # TODO: Mock this!
@@ -121,8 +120,9 @@ describe Tweet::Handler, :vcr do
         status_id: status_id)
 
       handler.check_validity
+      handler.reply_build
       expect(handler.valid).to eq(false)
-      expect(handler.sender_reply).to include("top", "up")
+      expect(handler.reply).to include("top", "up")
     end
 
     it "should, otherwise, build a generic error message" do
@@ -134,21 +134,9 @@ describe Tweet::Handler, :vcr do
         status_id: status_id)
 
       handler.check_validity
+      handler.reply_build
       expect(handler.valid).to eq(false)
-      expect(handler.sender_reply).to include("not", "meant")
-    end
-
-    it "should build a valid sender reply message" do
-      create(:mctestor)
-      content = "@JimmyMcTester, 0.001 BTC, @tippercoin"
-      handler = Tweet::Handler.new(
-        content: content,
-        sender: sender,
-        status_id: status_id)
-
-      handler.check_validity
-      expect(handler.valid).to eq(true)
-      expect(handler.sender_reply).to include("@McTestor", "successful")
+      expect(handler.reply).to include("not", "meant")
     end
 
     it "should build a valid recipient reply message" do
@@ -161,9 +149,28 @@ describe Tweet::Handler, :vcr do
 
       handler.check_validity
       expect(handler.valid).to eq(true)
+
       handler.find_or_create_recipient
-      handler.recipient_reply_build
-      expect(handler.recipient_reply).to include("@JimmyMcTester", "0.001", "tipped")
+      handler.reply_build
+      expect(handler.reply).to include("@JimmyMcTester", "0.001", "tipped")
+    end
+
+    it "should not include status_id in reply if invalid" do
+      content = "@JimmyMcTester, failure, @tippercoin"
+      create(:mctestor)
+      handler = Tweet::Handler.new(
+        content: content,
+        sender: sender,
+        status_id: status_id)
+
+      expect(handler.status_id).to_not eq(nil)
+      handler.check_validity
+      expect(handler.valid).to eq(false)
+      handler.reply_build
+
+      handler.find_or_create_recipient
+      handler.reply_build
+      expect(handler.status_id).to eq(nil)
     end
 
   end
