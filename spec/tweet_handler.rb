@@ -73,7 +73,6 @@ describe Tweet::Handler, :vcr do
   context "Check Validity" do
 
     it "should, if no account, build the error message" do
-      User.create_profile("McTestor", authenticated: false)
       content = "@JimmyMcTester, 0.001 BTC, @tippercoin"
       handler = Tweet::Handler.new(
         content: content,
@@ -86,32 +85,37 @@ describe Tweet::Handler, :vcr do
       expect(handler.reply).to include("authenticate", "deposit", sender)
     end
 
+    context "with account" do
+      before(:each) do
+        User.create_profile("McTestor", uid: 123123, via_oauth: true)
+      end
 
-    it "should, if 0 amount, build the error message" do
-      content = "@JimmyMcTester, 0 BTC, @tippercoin"
-      handler = Tweet::Handler.new(
-        content: content,
-        sender: sender,
-        status_id: status_id)
 
-      handler.check_validity
-      handler.reply_build
-      expect(handler.valid).to eq(false)
-      expect(handler.reply).to include('tip', 'more', sender)
-    end
+      it "should, if 0 amount, build the error message" do
+        content = "@JimmyMcTester, 0 BTC, @tippercoin"
+        handler = Tweet::Handler.new(
+          content: content,
+          sender: sender,
+          status_id: status_id)
 
-    it "should, if direct tweet, build the error message" do
-      content = "@tippercoin, 1 BTC, @otherdude"
-      handler = Tweet::Handler.new(
-        content: content,
-        sender: sender,
-        status_id: status_id)
+        handler.check_validity
+        handler.reply_build
+        expect(handler.valid).to eq(false)
+        expect(handler.reply).to include('tip', 'more', sender)
+      end
 
-      handler.check_validity
-      handler.reply_build
-      expect(handler.valid).to eq(false)
-      expect(handler.reply).to include('someone', 'else', sender)
-    end
+      it "should, if direct tweet, build the error message" do
+        content = "@tippercoin, 1 BTC, @otherdude"
+        handler = Tweet::Handler.new(
+          content: content,
+          sender: sender,
+          status_id: status_id)
+
+        handler.check_validity
+        handler.reply_build
+        expect(handler.valid).to eq(false)
+        expect(handler.reply).to include('someone', 'else', sender)
+      end
 
     # TODO: Mock this!
     it "should, if not enough balance, build the error message" do
@@ -171,9 +175,10 @@ describe Tweet::Handler, :vcr do
     end
 
   end
+end
 
-  context "Edge Cases" do
-    it "should search for screen_name regardless of casing" do
+context "Edge Cases" do
+  it "should search for screen_name regardless of casing" do
       # This is lowercase, twitter api actually return titleized
       content = "@mctestor, 0.0001 BTC @tippercoin"
       handler = Tweet::Handler.new(
@@ -186,9 +191,9 @@ describe Tweet::Handler, :vcr do
     end
 
     it "should not duplicate users when screen_names have different casing" do
-      user = User.new(screen_name: "McTestor", api_user_id_str: "1")
+      user = User.new(screen_name: "McTestor", uid: "1")
       expect(user.save).to eq(true)
-      user_lower = User.new(screen_name: "mctestor", api_user_id_str: "2")
+      user_lower = User.new(screen_name: "mctestor", uid: "2")
       expect(user_lower.save).to eq(false)
     end
 
@@ -199,8 +204,8 @@ describe Tweet::Handler, :vcr do
     it "should not find_profile is there is not address" do
       User.create({
         screen_name: sender,
-        api_user_id_str: "321"
-      })
+        uid: "321"
+        })
 
       user = User.find_profile(sender)
       expect(user).to be(nil)
@@ -217,8 +222,8 @@ describe Tweet::Handler, :vcr do
     it "should create address even if there is already a user" do
       user = User.create({
         screen_name: sender,
-        api_user_id_str: "321"
-      })
+        uid: "321"
+        })
 
       expect(user.addresses.blank?).to eq(true)
 

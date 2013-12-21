@@ -1,7 +1,7 @@
 ### User
 screen_name
 authenticated default: false
-api_user_id_str
+uid
 
 ### TweetTip (like a followings table)
 content
@@ -23,7 +23,7 @@ user_id
 
 
 ### Migrations
-rails g model User screen_name:string authenticated:boolean api_user_id_str:string
+rails g model User screen_name:string authenticated:boolean uid:string
 
 rails g model TweetTip content:string api_tweet_id_str:string recipient_id:integer sender_id:integer transaction_id:integer
 

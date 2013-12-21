@@ -13,8 +13,8 @@ class Tweet::Handler
     @parsed_tweet = Tweet::Parser.new(@content, @sender)
     @valid = false
     @recipient = @parsed_tweet.info[:recipient]
-    @sender_user = find_user(@sender) || create_user(@sender)
-    @recipient_user = find_user(@recipient) || create_user(@recipient)
+    @sender_user = User.find_profile(@sender) || User.create_profile(@sender)
+    @recipient_user = User.find_profile(@recipient) || User.create_profile(@recipient)
   end
 
   def save_tweet_tip
@@ -26,15 +26,6 @@ class Tweet::Handler
     })
 
     @tweet_tip.save
-  end
-
-  # Returns ActiveRecord Object, or nil
-  def find_user(screen_name)
-    User.find_profile(screen_name)
-  end
-
-  def create_user(screen_name)
-    User.create_profile(screen_name)
   end
 
   def check_validity

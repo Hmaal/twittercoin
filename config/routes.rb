@@ -7,5 +7,6 @@ Twittercoin::Application.routes.draw do
   end
 
   get 'auth/twitter/callback' => "sessions#create"
+  get '/signout' => "sessions#destroy"
 
 end
