@@ -46,7 +46,7 @@ describe User do
       # Create first
 
       # Retrive
-      @user = User.where(screen_name: "JimmyMcTester").first
+      @user = User.find_by(screen_name: "JimmyMcTester")
     end
 
     it "should return screen_name" do

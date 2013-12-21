@@ -3,7 +3,7 @@ class CreateUsers < ActiveRecord::Migration
     create_table :users do |t|
       t.string :screen_name
       t.boolean :authenticated, default: false
-      t.string :api_user_id_str
+      t.string :uid
 
       t.timestamps
     end

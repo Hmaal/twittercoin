@@ -51,8 +51,8 @@ ActiveRecord::Schema.define(version: 20131220014726) do
 
   create_table "users", force: true do |t|
     t.string   "screen_name"
-    t.boolean  "authenticated",   default: false
-    t.string   "api_user_id_str"
+    t.boolean  "authenticated", default: false
+    t.string   "uid"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

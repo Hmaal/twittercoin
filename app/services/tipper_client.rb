@@ -10,7 +10,7 @@ module TipperClient
       description: user.description,
       avatar_large: user.profile_image_url_https.to_s.gsub("_normal", ""),
       avatar_small: user.profile_image_url_https.to_s,
-      api_user_id_str: user.id.to_s
+      uid: user.id.to_s
     }
   end
 
@@ -31,7 +31,7 @@ module TipperClient
     tweets = mentions + hashtags
 
     tweets.each do |tweet|
-      tt = TweetTip.where(api_tweet_id_str: tweet[:id].to_s).first
+      tt = TweetTip.find_by(api_tweet_id_str: tweet[:id].to_s)
       uncaught << tweet if tt.blank?
     end
 

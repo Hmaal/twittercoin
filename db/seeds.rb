@@ -9,13 +9,13 @@
 # user = User.create({
 #   screen_name: "McTestor",
 #   authenticated: true,
-#   api_user_id_str: "2253000787"
+#   uid: "2253000787"
 # })
 
 # user2 = User.create({
 #   screen_name: "JimmyMcTester",
 #   authenticated: true,
-#   api_user_id_str: "31232132131"
+#   uid: "31232132131"
 # })
 
 # user.tips_given.create({
