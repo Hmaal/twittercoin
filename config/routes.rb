@@ -6,4 +6,6 @@ Twittercoin::Application.routes.draw do
     resources :profiles, param: :screen_name
   end
 
+  get 'auth/twitter/callback' => "sessions#create"
+
 end
