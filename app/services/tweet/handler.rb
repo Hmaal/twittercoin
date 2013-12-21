@@ -2,24 +2,27 @@ class Tweet::Handler
 
   attr_accessor :content, :sender, :recipient,
   :reply, :recipient_user, :sender_user,
-  :status_id, :parsed_tweet, :valid, :state
+  :status_id, :parsed_tweet, :valid, :state,
+  :reply_id
 
   def initialize(content: nil, sender: nil, status_id: nil)
     @content = content
     @sender = sender
     @status_id = status_id
+    @reply_id = status_id
     @parsed_tweet = Tweet::Parser.new(@content, @sender)
-    @recipient = @parsed_tweet.info[:recipient]
-    @sender_user = find_user(@sender)
-    @recipient_user = find_user(@recipient)
     @valid = false
+    @recipient = @parsed_tweet.info[:recipient]
+    @sender_user = find_user(@sender) || create_user(@sender)
+    @recipient_user = find_user(@recipient) || create_user(@recipient)
   end
 
   def save_tweet_tip
-    @tweet_tip = TweetTip.new({
+    @tweet_tip = @sender_user.tips_given.new({
       content: @content,
+      screen_name: @sender,
       api_tweet_id_str: @status_id,
-      screen_name: @sender
+      recipient_id: @recipient_user.id
     })
 
     @tweet_tip.save
@@ -27,29 +30,17 @@ class Tweet::Handler
 
   # Returns ActiveRecord Object, or nil
   def find_user(screen_name)
-    User.where("screen_name ILIKE ?", "%#{screen_name}%").first
+    User.find_profile(screen_name)
   end
 
   def create_user(screen_name)
-    result = TwitterSearch.new(screen_name)
-    user = User.create({
-      screen_name: result.screen_name,
-      authenticated: false,
-      api_user_id_str: result.api_user_id_str
-    })
-    user.addresses.create(BitcoinAPI.generate_address)
-
-    return user
-  end
-
-  def find_or_create_recipient
-    @recipient_user ||= create_user(@recipient)
+    User.create_profile(screen_name)
   end
 
   def check_validity
     @valid = false
     # @state represents what went wrong, and associated message method
-    return @state = :no_account if !@sender_user # Check first, else authenticate
+    return @state = :unauthenticated if !@sender_user.authenticated
     return @state = :not_enough_balance if !@sender_user.enough_balance?
     return @state = :zero_amount if @parsed_tweet.info[:amount].try(:zero?)
     return @state = :direct_tweet if @parsed_tweet.direct_tweet?
@@ -63,16 +54,18 @@ class Tweet::Handler
         @recipient, @sender, @parsed_tweet.info[:amount])
     else
       @reply = Tweet::Message::Invalid.send(@state, @sender)
-      @status_id = nil
+      @reply_id = nil
     end
   end
 
   def reply_deliver
-    TWITTER_CLIENT.update(@reply, in_reply_to_status_id: @status_id)
+    TWITTER_CLIENT.update(@reply, in_reply_to_status_id: @reply_id)
   end
 
   def push_tx
-    # BitcoinAPI.push_tx()
+    # transaction = BitcoinAPI.push_tx()
+    # @tweet_tip.transactions.new({})
+
   end
 
 end

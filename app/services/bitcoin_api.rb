@@ -5,8 +5,8 @@ module BitcoinAPI
   # TODO
   def generate_address
     {
-      encrypted_private_key: "1xyzfakeprivateaddress",
-      public_key: "1xyzfakepublicaddress"
+      encrypted_private_key: SecureRandom.hex,
+      public_key: SecureRandom.hex
     }
   end
 
