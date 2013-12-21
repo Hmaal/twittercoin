@@ -47,13 +47,19 @@ describe Tweet::Handler, :vcr do
       expect(@handler.recipient_user.addresses.first).to_not eq(nil)
     end
 
-    it "should save the tweet in db regardless" do
+    it "should save the tweet_tip in db regardless" do
       expect(TweetTip.count).to eq(0)
       expect(@handler.save_tweet_tip).to eq(true)
       expect(TweetTip.count).to eq(1)
       tweet_tip = TweetTip.last
       expect(tweet_tip.screen_name).to eq(sender)
       expect(tweet_tip.content).to eq(content)
+    end
+
+    it "should save tweet_tip with assocations" do
+      expect(@handler.save_tweet_tip).to eq(true)
+      expect(@handler.tweet_tip.sender.screen_name).to eq(sender)
+      expect(@handler.tweet_tip.recipient.screen_name).to eq("JimmyMcTester")
     end
 
     # How to effectively test API?

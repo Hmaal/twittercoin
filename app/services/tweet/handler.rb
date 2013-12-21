@@ -3,7 +3,7 @@ class Tweet::Handler
   attr_accessor :content, :sender, :recipient,
   :reply, :recipient_user, :sender_user,
   :status_id, :parsed_tweet, :valid, :state,
-  :reply_id
+  :reply_id, :tweet_tip
 
   def initialize(content: nil, sender: nil, status_id: nil)
     @content = content
