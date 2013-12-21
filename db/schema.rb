@@ -53,10 +53,13 @@ ActiveRecord::Schema.define(version: 20131220014726) do
     t.string   "screen_name"
     t.boolean  "authenticated", default: false
     t.string   "uid"
+    t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "users", ["screen_name"], name: "index_users_on_screen_name", using: :btree
+  add_index "users", ["slug"], name: "index_users_on_slug", using: :btree
+  add_index "users", ["uid"], name: "index_users_on_uid", using: :btree
 
 end

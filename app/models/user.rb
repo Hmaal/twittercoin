@@ -35,9 +35,17 @@ class User < ActiveRecord::Base
     user = User.find_or_create_by(screen_name: screen_name)
     user.authenticated = via_oauth
     user.uid = uid
+    user.slug ||= SecureRandom.hex(8)
+
+    user.save
 
     user.addresses.create(BitcoinAPI.generate_address)
     return user
+  end
+
+  # TODO: SECURITY, this is the most sensitive part
+  def withdraw(amount, to_address)
+
   end
 
 end
