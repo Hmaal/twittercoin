@@ -1,14 +1,15 @@
 class SessionsController < ApplicationController
 
   def create
-    info = request.env["omniauth.auth"]["body"]
+    auth = request.env["omniauth.auth"]
 
-    user = User.find_by(uid: info["id"].to_s)
-    user ||= User.create_profile(info["screen_name"],
-      uid: info["uid"],
+    user = User.find_by(uid: auth["uid"].to_s)
+    user ||= User.create_profile(auth["info"]["nickname"],
+      uid: auth["uid"],
       via_oauth: true )
 
     session[:user_id] = user.id
+
     redirect_to "/", flash: {
       info: "Welcome!"
     }

@@ -7,8 +7,6 @@ class User < ActiveRecord::Base
   has_many :addresses
 
   validates :screen_name, uniqueness: { case_sensitive: false }, presence: true
-  # validates :uid, uniqueness: true
-
 
   def all_tips
     self.tips_received + self.tips_given
@@ -37,7 +35,6 @@ class User < ActiveRecord::Base
     user = User.find_or_create_by(screen_name: screen_name)
     user.authenticated = via_oauth
     user.uid = uid
-    user.save
 
     user.addresses.create(BitcoinAPI.generate_address)
     return user
