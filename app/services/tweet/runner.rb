@@ -25,9 +25,6 @@ module Tweet::Runner
       return
     end
 
-    ap 'finding/creating recipient ...'
-    handler.find_or_create_recipient
-
     ap 'pushing tx ...'
     handler.push_tx
 
