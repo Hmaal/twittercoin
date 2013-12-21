@@ -63,6 +63,8 @@ describe Tweet::Handler, :vcr do
 
     it "should reply to recipient"
 
+    it "should reply to recipient"
+
   end
 
   context "Check Validity" do
@@ -158,7 +160,7 @@ describe Tweet::Handler, :vcr do
       expect(handler.valid).to eq(true)
       handler.find_or_create_recipient
       handler.recipient_reply_build
-      expect(handler.recipient_reply).to include("@JimmyMcTester", "tipped")
+      expect(handler.recipient_reply).to include("@JimmyMcTester", "0.001", "tipped")
     end
 
   end
