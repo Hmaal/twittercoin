@@ -1,8 +1,8 @@
 class Tweet::Handler
 
   attr_accessor :content, :sender, :recipient,
-  :sender_reply, :recipient_reply, :recipient_user, :sender_user,
-  :status_id, :parsed_tweet, :valid
+  :reply, :recipient_user, :sender_user,
+  :status_id, :parsed_tweet, :valid, :state
 
   def initialize(content: nil, sender: nil, status_id: nil)
     @content = content
@@ -46,44 +46,29 @@ class Tweet::Handler
     @recipient_user ||= create_user(@recipient)
   end
 
-  # Checks Validity and builds sender reply
   def check_validity
-    # Check user should be first
-    if !@sender_user
-      @sender_reply = Tweet::Message::Invalid.no_account(@sender) and return
-    end
-
-    if !@sender_user.enough_balance?
-      @sender_reply = Tweet::Message::Invalid.not_enough_balance(@sender) and return
-    end
-
-    if @parsed_tweet.info[:amount] && @parsed_tweet.info[:amount].zero?
-      @sender_reply = Tweet::Message::Invalid.zero_amount(@sender) and return
-    end
-
-    if @parsed_tweet.direct_tweet?
-      @sender_reply = Tweet::Message::Invalid.direct_tweet(@sender) and return
-    end
-
-    if !@parsed_tweet.valid? # Other Unknown Error
-      @sender_reply = Tweet::Message::Invalid.unknown(@sender) and return
-    end
-
-    @sender_reply = Tweet::Message::Valid.sender(@recipient, @sender)
+    @valid = false
+    # @state represents what went wrong, and associated message method
+    return @state = :no_account if !@sender_user # Check first, else authenticate
+    return @state = :not_enough_balance if !@sender_user.enough_balance?
+    return @state = :zero_amount if @parsed_tweet.info[:amount].try(:zero?)
+    return @state = :direct_tweet if @parsed_tweet.direct_tweet?
+    return @state = :unknown if !@parsed_tweet.valid? # Other Unknown Error
     @valid = true
   end
 
-  def recipient_reply_build
-    @recipient_reply = Tweet::Message::Valid.recipient(
-      @recipient, @sender, @parsed_tweet.info[:amount])
+  def reply_build
+    if @valid
+      @reply = Tweet::Message::Valid.recipient(
+        @recipient, @sender, @parsed_tweet.info[:amount])
+    else
+      @reply = Tweet::Message::Invalid.send(@state, @sender)
+      @status_id = nil
+    end
   end
 
-  def sender_reply_deliver
-    TWITTER_CLIENT.update(@sender_reply, in_reply_to_status_id: @status_id)
-  end
-
-  def recipient_reply_deliver
-    TWITTER_CLIENT.update(@recipient_reply, in_reply_to_status_id: @status_id)
+  def reply_deliver
+    TWITTER_CLIENT.update(@reply, in_reply_to_status_id: @status_id)
   end
 
   def push_tx
