@@ -38,6 +38,7 @@ ActiveRecord::Schema.define(version: 20131220014726) do
 
   create_table "tweet_tips", force: true do |t|
     t.string   "content"
+    t.string   "screen_name"
     t.string   "api_tweet_id_str"
     t.integer  "recipient_id"
     t.integer  "sender_id"
