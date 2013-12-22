@@ -4,19 +4,15 @@
   <title>Twittercoin</title>
   <%= stylesheet_link_tag    "application", media: "all"%>
 
-  <script src="http://js.pusher.com/2.1/pusher.min.js" type="text/javascript"></script>
-  <%= javascript_include_tag "application" %>
-  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-
   <%= csrf_meta_tags %>
 
-  <meta name="description" content="Bitcoin Merchants Visualized">
-  <meta name="og:description" content="Bitcoin Merchants Visualized">
-  <meta name="keywords" content="bitcoin" />
+  <meta name="description" content="Send Bitcoins over Twitter">
+  <meta name="og:description" content="Send Bitcoins over Twitter">
+  <meta name="keywords" content="bitcoin, twitter" />
 
-  <meta property="og:title" content="CoinStream | Bitcoin Merchants Visualized">
-  <meta property="og:url" content="http://merchants.coinstream.io/">
-  <meta property="og:image" content="http://i.imgur.com/S19Tvw6.png/" />
+  <meta property="og:title" content="TipperCoin | Send Bitcoins over Twitter">
+  <meta property="og:url" content="http://tippercoin.com/">
+  <meta property="og:image" content="http://TODO/" />
 
   <!-- GA ANALYTICS -->
 
@@ -24,5 +20,10 @@
 <body ng-cloak>
 	<navbar></navbar>
 	<div class="container" ng-view></div>
+
+
+  <script src="http://js.pusher.com/2.1/pusher.min.js" type="text/javascript"></script>
+  <%= javascript_include_tag "application" %>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
 </body>
 </html>

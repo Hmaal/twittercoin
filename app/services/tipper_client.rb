@@ -5,11 +5,11 @@ module TipperClient
     user = TWITTER_CLIENT.user(screen_name)
 
     {
-      screen_name: user.screen_name,
+      screenName: user.screen_name,
       name: user.name,
       description: user.description,
-      avatar_large: user.profile_image_url_https.to_s.gsub("_normal", ""),
-      avatar_small: user.profile_image_url_https.to_s,
+      avatarLarge: user.profile_image_url_https.to_s.gsub("_normal", ""),
+      avatarSmall: user.profile_image_url_https.to_s,
       uid: user.id.to_s
     }
   end
