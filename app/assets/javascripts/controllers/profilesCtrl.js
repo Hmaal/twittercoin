@@ -1,6 +1,6 @@
 'use strict'
 
-tcApp.controller( "profilesCtrl", function( $scope, $resource, $routeParams ) {
+tcApp.controller( "profilesCtrl", function( $scope, $resource, $routeParams, $location ) {
 
 	var Profile = $resource( "/api/profiles/:screenName" )
 
@@ -8,6 +8,8 @@ tcApp.controller( "profilesCtrl", function( $scope, $resource, $routeParams ) {
 		screenName: $routeParams.screenName
 	}, function( profile ) {
 		$scope.profile = profile;
+	}, function() {
+		$location.path( "/" )
 	} )
 
 } )

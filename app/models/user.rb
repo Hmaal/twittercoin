@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   validates :screen_name, uniqueness: { case_sensitive: false }, presence: true
 
   def all_tips
-    self.tips_received + self.tips_given
+    (self.tips_received.valid + self.tips_given.valid).sort_by { |t| t.created_at }.reverse
   end
 
   # TODO
