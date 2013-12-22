@@ -57,3 +57,7 @@ a.text-muted:hover {
 .label-thin {
 	font-weight: 200;
 }
+
+.tx-direction {
+	margin-top: 12px;
+}
