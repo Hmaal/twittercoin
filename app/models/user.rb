@@ -12,16 +12,6 @@ class User < ActiveRecord::Base
     (self.tips_received.valid + self.tips_given.valid).sort_by { |t| t.created_at }.reverse
   end
 
-  # TODO
-  def balance
-    BitcoinAPI.get_balance(user.addresses.first.public_key)
-  end
-
-  # TODO: mock this
-  def enough_balance?
-    return true
-  end
-
   def self.find_profile(screen_name)
     user = User.find_by("screen_name ILIKE ?", "%#{screen_name}%")
     return if user.blank?
@@ -29,12 +19,8 @@ class User < ActiveRecord::Base
     return user
   end
 
-  def self.create_profile(screen_name, uid: nil, via_oauth: false)
-    result = TipperClient.search_user(screen_name) unless via_oauth
-
+  def self.create_profile(screen_name)
     user = User.find_or_create_by(screen_name: screen_name)
-    user.authenticated = via_oauth
-    user.uid = uid
     user.slug ||= SecureRandom.hex(8)
 
     user.save
@@ -43,9 +29,26 @@ class User < ActiveRecord::Base
     return user
   end
 
-  # TODO: SECURITY, this is the most sensitive part
-  def withdraw(amount, to_address)
+  def current_address
+    self.addresses.last.address
+  end
 
+  def get_balance
+    info = BitcoinAPI.get_info(self.current_address)
+    info["final_balance"]
+  end
+
+  def enough_balance?(amount)
+    amount ||= 0
+    get_balance >= amount + FEE
+  end
+
+  def withdraw(amount, to_address)
+    BitcoinAPI.send_tx(
+      self.addresses.last,
+      to_address,
+      amount)
+    return true
   end
 
 end

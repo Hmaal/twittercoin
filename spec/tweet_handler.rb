@@ -1,6 +1,5 @@
 require 'spec_helper'
 
-# TODO: Occassionally clear VCR cache, and retest live
 describe Tweet::Handler, :vcr do
 
   let(:sender) { "McTestor" }
@@ -32,6 +31,10 @@ describe Tweet::Handler, :vcr do
     it "should parse the tweet" do
       expect(@handler.parsed_tweet.info).to eq(info)
       expect(@handler.recipient).to eq('JimmyMcTester')
+    end
+
+    it "should set satoshis from parsed tweet" do
+      expect(@handler.satoshis).to eq(1_000_000)
     end
 
     it "should have valid false by default" do
@@ -117,68 +120,70 @@ describe Tweet::Handler, :vcr do
         expect(handler.reply).to include('someone', 'else', sender)
       end
 
-    # TODO: Mock this!
-    it "should, if not enough balance, build the error message" do
-      content = "@JimmyMcTester, 1 BTC, @tippercoin"
-      handler = Tweet::Handler.new(
-        content: content,
-        sender: sender,
-        status_id: status_id)
+      it "should, if not enough balance, build the error message" do
+        content = "@JimmyMcTester, 1 BTC, @tippercoin"
+        handler = Tweet::Handler.new(
+          content: content,
+          sender: sender,
+          status_id: status_id)
 
-      handler.check_validity
-      handler.reply_build
-      expect(handler.valid).to eq(false)
-      expect(handler.reply).to include("top", "up")
+        handler.check_validity
+        handler.reply_build
+        expect(handler.valid).to eq(false)
+        expect(handler.reply).to include("top", "up")
+      end
+
+      # TODO: Mock to have enough_balance?
+      it "should, otherwise, build a generic error message" do
+        content = "Does this actually work @tippercoin"
+        handler = Tweet::Handler.new(
+          content: content,
+          sender: sender,
+          status_id: status_id)
+
+        handler.check_validity
+        handler.reply_build
+        expect(handler.valid).to eq(false)
+        expect(handler.reply).to include("not", "meant")
+      end
+
+      # TODO: Mock to have enough_balance?
+      it "should build a valid recipient reply message" do
+        content = "@JimmyMcTester, 0.001 BTC, @tippercoin"
+        handler = Tweet::Handler.new(
+          content: content,
+          sender: sender,
+          status_id: status_id)
+
+        handler.check_validity
+        expect(handler.valid).to eq(true)
+
+        handler.reply_build
+        expect(handler.reply).to include("@JimmyMcTester", "0.001", "tipped")
+      end
+
+      # TODO: Mock to have enough_balance?
+      it "should not include reply_id in reply if invalid" do
+        content = "@JimmyMcTester, failure, @tippercoin"
+        handler = Tweet::Handler.new(
+          content: content,
+          sender: sender,
+          status_id: status_id)
+
+        expect(handler.status_id).to_not eq(nil)
+        handler.check_validity
+        expect(handler.state).to eq(:unknown)
+        expect(handler.valid).to eq(false)
+
+        handler.reply_build
+        expect(handler.reply_id).to eq(nil)
+      end
+
     end
-
-    it "should, otherwise, build a generic error message" do
-      content = "Does this actually work @tippercoin"
-      handler = Tweet::Handler.new(
-        content: content,
-        sender: sender,
-        status_id: status_id)
-
-      handler.check_validity
-      handler.reply_build
-      expect(handler.valid).to eq(false)
-      expect(handler.reply).to include("not", "meant")
-    end
-
-    it "should build a valid recipient reply message" do
-      content = "@JimmyMcTester, 0.001 BTC, @tippercoin"
-      handler = Tweet::Handler.new(
-        content: content,
-        sender: sender,
-        status_id: status_id)
-
-      handler.check_validity
-      expect(handler.valid).to eq(true)
-
-      handler.reply_build
-      expect(handler.reply).to include("@JimmyMcTester", "0.001", "tipped")
-    end
-
-    it "should not include reply_id in reply if invalid" do
-      content = "@JimmyMcTester, failure, @tippercoin"
-      handler = Tweet::Handler.new(
-        content: content,
-        sender: sender,
-        status_id: status_id)
-
-      expect(handler.status_id).to_not eq(nil)
-      handler.check_validity
-      expect(handler.state).to eq(:unknown)
-      expect(handler.valid).to eq(false)
-
-      handler.reply_build
-      expect(handler.reply_id).to eq(nil)
-    end
-
   end
-end
 
-context "Edge Cases" do
-  it "should search for screen_name regardless of casing" do
+  context "Edge Cases" do
+    it "should search for screen_name regardless of casing" do
       # This is lowercase, twitter api actually return titleized
       content = "@mctestor, 0.0001 BTC @tippercoin"
       handler = Tweet::Handler.new(

@@ -3,7 +3,7 @@ class Tweet::Handler
   attr_accessor :content, :sender, :recipient,
   :reply, :recipient_user, :sender_user,
   :status_id, :parsed_tweet, :valid, :state,
-  :reply_id, :tweet_tip
+  :reply_id, :tweet_tip, :satoshis
 
   def initialize(content: nil, sender: nil, status_id: nil)
     @content = content
@@ -11,8 +11,9 @@ class Tweet::Handler
     @status_id = status_id
     @reply_id = status_id
     @parsed_tweet = Tweet::Parser.new(@content, @sender)
-    @valid = false
+    @satoshis = @parsed_tweet.info[:amount]
     @recipient = @parsed_tweet.info[:recipient]
+    @valid = false
     @sender_user = User.find_profile(@sender) || User.create_profile(@sender)
     @recipient_user = User.find_profile(@recipient) || User.create_profile(@recipient)
   end
@@ -32,9 +33,9 @@ class Tweet::Handler
     @valid = false
     # @state represents what went wrong, and associated message method
     return @state = :unauthenticated if !@sender_user.authenticated
-    return @state = :not_enough_balance if !@sender_user.enough_balance?
-    return @state = :zero_amount if @parsed_tweet.info[:amount].try(:zero?)
+    return @state = :zero_amount if @satoshis.try(:zero?)
     return @state = :direct_tweet if @parsed_tweet.direct_tweet?
+    return @state = :not_enough_balance if !@sender_user.enough_balance?(@satoshis)
     return @state = :unknown if !@parsed_tweet.valid? # Other Unknown Error
     @valid = true
   end
@@ -42,7 +43,7 @@ class Tweet::Handler
   def reply_build
     if @valid
       @reply = Tweet::Message::Valid.recipient(
-        @recipient, @sender, @parsed_tweet.info[:amount])
+        @recipient, @sender, @satoshis)
     else
       @reply = Tweet::Message::Invalid.send(@state, @sender)
       @reply_id = nil
@@ -53,10 +54,16 @@ class Tweet::Handler
     TWITTER_CLIENT.update(@reply, in_reply_to_status_id: @reply_id)
   end
 
-  def push_tx
-    # transaction = BitcoinAPI.push_tx()
-    # @tweet_tip.transactions.new({})
+  def send_tx
+    tx = BitcoinAPI.send_tx(
+      @sender_user.addresses.last,
+      @recipient_user.addresses.last.address,
+      @satoshis)
 
+    @tweet_tip.tx_hash = tx
+    @tweet_tip.satoshis = @satoshis
+
+    @tweet_tip.save
   end
 
 end

@@ -67,7 +67,7 @@
 				<tbody>
 					<tr class='text-center' ng-repeat="tip in profile.tips">
 						<td>
-							<a class='no-decorate' href="#">
+							<a class='no-decorate' href="#/profile/{{tip.sender.screenName}}">
 								<p class="lead">
 									<img ng-src="{{tip.sender.avatarSmall}}">
 									<span class="label label-{{tip.sender.css}} label-large square">
@@ -84,7 +84,7 @@
 							</p>
 						</td>
 						<td>
-							<a class='no-decorate' href="#">
+							<a class='no-decorate' href="#/profile/{{tip.recipient.screenName}}">
 								<p class="lead">
 									<img ng-src="{{tip.recipient.avatarSmall}}">
 									<span class="label label-{{tip.recipient.css}} label-thin label-large square">
