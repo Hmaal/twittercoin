@@ -6,7 +6,8 @@ class CreateTweetTips < ActiveRecord::Migration
       t.string :api_tweet_id_str
       t.integer :recipient_id
       t.integer :sender_id
-      t.integer :transaction_id
+      t.integer :satoshis
+      t.string :tx_hash
 
       t.timestamps
     end

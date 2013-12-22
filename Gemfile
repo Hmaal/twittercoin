@@ -30,6 +30,7 @@ end
 gem 'httparty'
 
 gem 'twitter'
+gem 'omniauth-twitter'
 
 gem 'puma'
 
