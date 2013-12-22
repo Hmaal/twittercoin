@@ -1,10 +1,10 @@
 'use strict'
 
 tcApp.controller( "accountCtrl", function( $scope, $resource, Account, $location ) {
-
+	$scope.shown = false
 	Account.get( "/", function( account ) {
 		$scope.account = account
-
+		$scope.shown = true
 		$scope.submitWithdraw = function() {
 			if ( $scope.withdrawForm.$invalid ) {
 				return;
