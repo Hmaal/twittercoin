@@ -1,8 +1,31 @@
 class Api::AccountController < ActionController::Base
 
-  def index
-    @user = User.find_by(slug: session[:slug])
+  before_filter :build_account
 
+  def index
+    render json: @account
+  end
+
+  def withdraw
+    ap params
+
+    @account[:balance] = 0
+    @account[:messages][:withdraw] = {
+      default: false,
+      success: true,
+      error: false
+    }
+
+    render json: @account
+  end
+
+  protected
+
+  def build_account
+    # TODO: Add 401
+    return unless session[:slug]
+
+    @user = User.find_by(slug: session[:slug])
     @account = {
       messages: {
         welcome: true,
@@ -21,28 +44,6 @@ class Api::AccountController < ActionController::Base
       balance: 0.001, #@user.get_balance
       minerFee: 0.0001
     }
-
-    # TODO: Add 401
-
-    render json: @account
-  end
-
-  def withdraw
-    ap params
-    @user = User.find_by(slug: session[:slug])
-
-    @account = {
-      balance: 0,
-      messages: {
-        withdraw: {
-          default: false,
-          success: true,
-          error: false
-        }
-      }
-    }
-
-    render json: @account
   end
 
 end
