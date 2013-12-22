@@ -41,3 +41,4 @@ end
 
 # Bitcoin
 gem 'bitcoin-ruby', require: 'bitcoin'
+gem 'ffi'
