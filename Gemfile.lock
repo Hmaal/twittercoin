@@ -56,6 +56,7 @@ GEM
       railties (>= 3.0.0)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
+    ffi (1.9.3)
     font-awesome-rails (4.0.3.0)
       railties (>= 3.2, < 5.0)
     hike (1.2.3)
@@ -187,6 +188,7 @@ DEPENDENCIES
   bitcoin-ruby
   coffee-rails (~> 4.0.0)
   factory_girl_rails
+  ffi
   font-awesome-rails
   httparty
   jbuilder (~> 1.2)
