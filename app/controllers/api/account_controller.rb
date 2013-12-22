@@ -40,7 +40,7 @@ class Api::AccountController < ActionController::Base
         amount: 0.001
       },
       screenName: @user.screen_name,
-      publicKey: @user.addresses.last.public_key,
+      address: @user.addresses.last.address,
       balance: 0.001, #@user.get_balance
       minerFee: 0.0001
     }

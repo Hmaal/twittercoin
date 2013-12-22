@@ -55,7 +55,7 @@ class Api::ProfilesController < ActionController::Base
       authenticated: @user.authenticated,
       totalTipsGiven: total_satoshis_given / SATOSHIS.to_f,
       totalTipsReceived: total_satoshis_received / SATOSHIS.to_f,
-      publicKey: @user.addresses.first.public_key,
+      address: @user.addresses.first.address,
       tips: @tips
     }
 
