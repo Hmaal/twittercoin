@@ -6,8 +6,11 @@
 </div>
 <h1 class='text-center username'>
 	<a href="#">@{{profile.screenName}}</a>
-	<span class="label label-success square label-small">
+	<span ng-show="profile.authenticated" class="label label-success square label-small">
 		AUTHENTICATED
+	</span>
+	<span ng-show="!profile.authenticated" class="label label-danger square label-small">
+		PENDING
 	</span>
 </h1>
 <br>
