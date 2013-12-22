@@ -1,13 +1,15 @@
 tcApp.directive( 'validateAddress', function() {
 	return {
+		require: "ngModel",
 		link: function( $scope, element, attrs, ctrl ) {
 			ctrl.$parsers.unshift( function( viewValue ) {
 				var address = new SpareCoins.Address( viewValue )
-
 				if ( address.validate() === true ) {
-					return ctrl.$setValidity( "notBase58", true )
+					ctrl.$setValidity( "notBase58", true )
+					return viewValue
 				} else {
-					return ctrl.$setValidity( "notBase58", false )
+					ctrl.$setValidity( "notBase58", false )
+					return undefined
 				}
 			} )
 		}

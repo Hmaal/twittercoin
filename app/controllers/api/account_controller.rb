@@ -11,7 +11,8 @@ class Api::AccountController < ActionController::Base
     amount = (params[:withdrawAmount].to_f * SATOSHIS).to_i
     to_address = params[:toAddress]
 
-    # raise HoldUp
+    raise HoldUp
+
     result = @user.withdraw(amount, to_address)
     return WithdrawFailed unless result
 

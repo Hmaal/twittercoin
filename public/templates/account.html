@@ -1,4 +1,5 @@
 <br>
+<div spin ng-show="true"></div>
 <div class="account" ng-show="shown">
   <div class="row">
     <tabset type="'pills'">
@@ -69,7 +70,7 @@
                   type="text"
                   class="square form-control"
                   ng-model="withdraw.toAddress"
-                  validate-address>
+                  validate-address="withdraw">
               </div>
             </div>
             <br><br>

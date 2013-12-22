@@ -16,10 +16,11 @@
 //= require angular-route
 //= require angular-resource
 //= require angular-ui-bootstrap-tpls
+//= require bitcoinjs.min
+//= require address
+//= require qrcode.min
+//= require spin.min
 //= require tcApp
 //= require_tree ./controllers
 //= require_tree ./directives
 //= require_tree ./services
-//= require bitcoinjs.min
-//= require address
-//= require qrcode.min
