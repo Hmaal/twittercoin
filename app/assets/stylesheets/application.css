@@ -37,3 +37,31 @@
 .twitter-blue-dark {
 	color: #0084b4;
 }
+
+.btn:focus {
+	outline: none;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+.error-messages {
+	min-height: 25px;
+	color: #b94a48;
+}
+
+input.ng-dirty.ng-invalid {
+	border-color: #b94a48;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+input.ng-dirty.ng-valid {
+	border-color: #22b24c;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}

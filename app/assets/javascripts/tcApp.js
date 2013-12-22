@@ -34,7 +34,7 @@ tcApp.config( function( $routeProvider ) {
 } )
 
 // Instantiate Pusher
-var pusher = new Pusher( 'af66c456e5950e60e048' );
+// var pusher = new Pusher( 'af66c456e5950e60e048' );
 
 // Pusher Debugger
 // Pusher.log = function( message ) {
