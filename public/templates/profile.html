@@ -6,7 +6,7 @@
 	</div>
 </div>
 <h1 class='text-center username'>
-	<a href="https://blockchain.info/address/{{profile.publicKey}}">
+	<a href="https://blockchain.info/address/{{profile.address}}">
 		@{{profile.screenName}}
 	</a>
 	<span ng-show="profile.authenticated" class="label label-success square label-small">
@@ -95,7 +95,7 @@
 					</td>
 					<td>
 						<p class="lead text-success">
-							<span class="text-primary">{{tip.amount}} BTC</span>
+							<span class="text-{{tip.txDirection}}">{{tip.amount}} BTC</span>
 							<span class="text-muted" ng-show="tip.other.presence">
 								<small>/{{tip.other.amount}} {{tip.other.unit}}</small>
 							</span>

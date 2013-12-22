@@ -16,7 +16,6 @@
   <script type="text/javascript">
     var signedIn = <%= User.find_by(slug: session[:slug]) ? true : false %>
   </script>
-  <!-- GA ANALYTICS -->
 
 </head>
 <body ng-cloak>
@@ -27,5 +26,6 @@
   <script src="http://js.pusher.com/2.1/pusher.min.js" type="text/javascript"></script>
   <%= javascript_include_tag "application" %>
   <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+  <!-- GA ANALYTICS -->
 </body>
 </html>

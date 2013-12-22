@@ -13,25 +13,38 @@
 		</div>
 		<div class="navbar-collapse collapse navbar-responsive-collapse">
 			<ul class="nav navbar-nav navbar-right">
-				<li>
-					<a href="#">
+				<li
+					ng-class="{'active': global.isActive('/how-it-works/')}">
+					<a href="#/how-it-works">
 						<i class="fa fa-info-circle"></i>
 						<span>How It Works</span>
 					</a>
 				</li>
-				<li ng-show="global.signedIn">
+				<li
+					ng-class="{'active': global.isActive('/profile/')}"
+					ng-show="global.signedIn">
 					<a href="#/profile/">
 						<i class="fa fa-user"></i>
 						<span>Profile</span>
 					</a>
 				</li>
-				<li ng-show="global.signedIn">
+				<li
+					ng-class="{'active': global.isActive('/account/')}"
+					ng-show="global.signedIn">
 					<a href="#/account">
 						<i class="fa fa-cog"></i>
 						<span>Account</span>
 					</a>
 				</li>
-				<li ng-show="!global.signedIn">
+				<li
+					ng-show="global.signedIn">
+					<a href="/signout">
+						<i class="fa fa-twitter"></i>
+						<span>Sign Out</span>
+					</a>
+				</li>
+				<li
+					ng-show="!global.signedIn">
 					<a href="/auth/twitter">
 						<i class="fa fa-twitter"></i>
 						<span>Sign In</span>
