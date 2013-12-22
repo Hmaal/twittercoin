@@ -8,8 +8,14 @@ class Api::AccountController < ActionController::Base
 
   def withdraw
     ap params
+    amount = (params[:withdrawAmount].to_f * SATOSHIS).to_i
+    to_address = params[:toAddress]
 
-    @account[:balance] = 0
+    # raise HoldUp
+    result = @user.withdraw(amount, to_address)
+    return WithdrawFailed unless result
+
+    @account[:balance] = (@account[:balance] - (amount/SATOSHIS.to_f)).round(6)
     @account[:messages][:withdraw] = {
       default: false,
       success: true,
@@ -26,10 +32,11 @@ class Api::AccountController < ActionController::Base
     return unless session[:slug]
 
     @user = User.find_by(slug: session[:slug])
+    @balance = (@user.get_balance / SATOSHIS.to_f).round(6)
     @account = {
       messages: {
         welcome: true,
-        deposit: true, #!@user.enough_balance?
+        deposit: @balance < MINIMUM_DEPOSIT / SATOSHIS.to_f,
         withdraw: {
           default: true,
           success: false,
@@ -37,11 +44,11 @@ class Api::AccountController < ActionController::Base
         }
       },
       deposit: {
-        amount: 0.001
+        amount: MINIMUM_DEPOSIT / SATOSHIS.to_f
       },
       screenName: @user.screen_name,
       address: @user.addresses.last.address,
-      balance: 0.001, #@user.get_balance
+      balance: @balance,
       minerFee: 0.0001
     }
   end

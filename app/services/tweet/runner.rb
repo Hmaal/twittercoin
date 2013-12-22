@@ -25,8 +25,8 @@ module Tweet::Runner
       return
     end
 
-    ap 'pushing tx ...'
-    handler.push_tx
+    ap 'sending tx ...'
+    handler.send_tx
 
     ap 'building/delivering reply ...'
     handler.reply_build

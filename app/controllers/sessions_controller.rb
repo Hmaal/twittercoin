@@ -4,11 +4,10 @@ class SessionsController < ApplicationController
     # raise request.env["omniauth.auth"].to_yaml
     auth = request.env["omniauth.auth"]
 
-    user = User.find_profile(auth["info"]["nickname"])
-
-    user ||= User.create_profile(auth["info"]["nickname"],
-      uid: auth["uid"],
-      via_oauth: true )
+    user = User.find_profile(auth["info"]["nickname"]) || User.create_profile(auth["info"]["nickname"])
+    user.uid = auth["uid"]
+    user.authenticated = true
+    user.save
 
     session[:slug] = user.slug
 

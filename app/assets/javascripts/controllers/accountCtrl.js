@@ -11,12 +11,13 @@ tcApp.controller( "accountCtrl", function( $scope, $resource, Account, $location
 			}
 
 			account.$withdraw( {
-				to_address: $scope.withdraw.toAddress,
-				amount: $scope.withdraw.amount,
+				toAddress: $scope.withdraw.toAddress,
+				withdrawAmount: $scope.withdraw.amount,
 			}, function( response ) {
 				$scope.account = response
 			}, function( error ) {
-				$scope.account = response
+				console.log( error )
+				$scope.errorMessages = error
 			} )
 		}
 	}, function( error ) {

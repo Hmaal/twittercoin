@@ -22,16 +22,17 @@ module BitcoinAPI
   # returns httparty response obj
   # exception is raised, ensure to rescue
   # BitcoinAPI.send_tx(from_address, "15TLNJ24UFixU1Vn7eogJYvgaH324SocK4", 0.001.to_satoshi, FEE)
-  def send_tx(from_address, to_address, amount, fee)
+  def send_tx(from_address, to_address, amount, fee = 10_000)
     raise AmountShouldBeFixnum if amount.class != Fixnum
     hex, tx_hash = construct_tx(from_address, to_address, amount, fee)
     push_tx(hex, tx_hash)
+    return tx_hash
   end
 
   def construct_tx(from_address, to_address, amount, fee)
     unspents = get_unspents(from_address.address, amount + fee)
     prikey = from_address.decrypt()
-    key = Bitcoin::Key.from_base58(prikey)
+    key = Bitcoin::Key.new(prikey, nil, false)
 
     new_tx = build_tx do |t|
       unspents.each do |unspent|

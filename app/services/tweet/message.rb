@@ -18,9 +18,9 @@ module Tweet::Message
     extend self
 
     def unauthenticated(sender)
-      link = "tippercoin.com/authenticate?user=#{sender}&r=#{rand}"
-      "Hi @#{sender}, to send tips, please authenticate via twitter, "\
-      "make a deposit, and then try again. #{link}"
+      link = "tippercoin.com/auth/twitter?r=#{rand}"
+      "Hey there @#{sender}, to start tipping, please authenticate via twitter "\
+      "and make a deposit. Thanks! #{link}"
     end
 
     def not_enough_balance(sender)
