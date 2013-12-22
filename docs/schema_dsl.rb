@@ -6,7 +6,7 @@ User.exists?(screen_name: "screenname")
 @user = User.create({
   screen_name: "screenname",
   authenticated: true,
-  api_user_id_str: 123456789
+  uid: 123456789
 })
 
 # if True

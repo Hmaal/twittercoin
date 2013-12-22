@@ -1,3 +1,0 @@
-tcApp.factory( 'index', function() {
-
-} )

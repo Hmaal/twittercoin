@@ -20,4 +20,6 @@
 //= require_tree ./controllers
 //= require_tree ./directives
 //= require_tree ./services
+//= require bitcoinjs.min
+//= require address
 //= require qrcode.min

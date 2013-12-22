@@ -27,22 +27,14 @@ ActiveRecord::Schema.define(version: 20131220014726) do
 
   add_index "addresses", ["address"], name: "index_addresses_on_address", using: :btree
 
-  create_table "transactions", force: true do |t|
-    t.integer  "satoshis"
-    t.string   "tx_hash"
-    t.integer  "tweet_tip_id"
-    t.integer  "address_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
-
   create_table "tweet_tips", force: true do |t|
     t.string   "content"
     t.string   "screen_name"
     t.string   "api_tweet_id_str"
     t.integer  "recipient_id"
     t.integer  "sender_id"
-    t.integer  "transaction_id"
+    t.integer  "satoshis"
+    t.string   "tx_hash"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -51,12 +43,15 @@ ActiveRecord::Schema.define(version: 20131220014726) do
 
   create_table "users", force: true do |t|
     t.string   "screen_name"
-    t.boolean  "authenticated",   default: false
-    t.string   "api_user_id_str"
+    t.boolean  "authenticated", default: false
+    t.string   "uid"
+    t.string   "slug"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "users", ["screen_name"], name: "index_users_on_screen_name", using: :btree
+  add_index "users", ["slug"], name: "index_users_on_slug", using: :btree
+  add_index "users", ["uid"], name: "index_users_on_uid", using: :btree
 
 end

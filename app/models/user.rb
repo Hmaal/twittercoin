@@ -7,11 +7,9 @@ class User < ActiveRecord::Base
   has_many :addresses
 
   validates :screen_name, uniqueness: { case_sensitive: false }, presence: true
-  validates :api_user_id_str, uniqueness: true, presence: true
-
 
   def all_tips
-    self.tips_received + self.tips_given
+    (self.tips_received.valid + self.tips_given.valid).sort_by { |t| t.created_at }.reverse
   end
 
   # TODO
@@ -25,24 +23,29 @@ class User < ActiveRecord::Base
   end
 
   def self.find_profile(screen_name)
-    user = User.where("screen_name ILIKE ?", "%#{screen_name}%").first
+    user = User.find_by("screen_name ILIKE ?", "%#{screen_name}%")
     return if user.blank?
     return if user.addresses.blank?
     return user
   end
 
-  # TODO: Twitter Auth
-  def self.create_profile(screen_name, authenticated: true)
-    user = User.find_or_create_by(screen_name: screen_name)
-    result = TwitterSearch.new(screen_name)
+  def self.create_profile(screen_name, uid: nil, via_oauth: false)
+    result = TipperClient.search_user(screen_name) unless via_oauth
 
-    user.screen_name = result.screen_name
-    user.authenticated = authenticated
-    user.api_user_id_str = result.api_user_id_str
+    user = User.find_or_create_by(screen_name: screen_name)
+    user.authenticated = via_oauth
+    user.uid = uid
+    user.slug ||= SecureRandom.hex(8)
+
     user.save
 
     user.addresses.create(BitcoinAPI.generate_address)
     return user
+  end
+
+  # TODO: SECURITY, this is the most sensitive part
+  def withdraw(amount, to_address)
+
   end
 
 end

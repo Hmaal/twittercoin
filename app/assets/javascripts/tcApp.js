@@ -10,6 +10,15 @@ tcApp.config( function( $httpProvider ) {
 	return $httpProvider.defaults.headers.common[ "X-CSRF-TOKEN" ] = authToken;
 } );
 
+tcApp.run( function( $rootScope, $location ) {
+	$rootScope.global = {
+		signedIn: signedIn,
+		isActive: function( path ) {
+			return path === $location.path()
+		}
+	}
+} )
+
 tcApp.config( function( $routeProvider ) {
 
 	$routeProvider.when( "/", {
@@ -17,9 +26,18 @@ tcApp.config( function( $routeProvider ) {
 		controller: "homeCtrl"
 	} )
 
+	$routeProvider.when( "/how-it-works/", {
+		templateUrl: "/templates/how-it-works.html"
+	} )
+
+	$routeProvider.when( "/profile/:screenName", {
+		templateUrl: "/templates/profile.html",
+		controller: "profilesCtrl"
+	} )
+
 	$routeProvider.when( "/profile/", {
 		templateUrl: "/templates/profile.html",
-		controller: "profileCtrl"
+		controller: "profilesCtrl"
 	} )
 
 	$routeProvider.when( "/account/", {
@@ -34,7 +52,7 @@ tcApp.config( function( $routeProvider ) {
 } )
 
 // Instantiate Pusher
-var pusher = new Pusher( 'af66c456e5950e60e048' );
+// var pusher = new Pusher( 'af66c456e5950e60e048' );
 
 // Pusher Debugger
 // Pusher.log = function( message ) {
