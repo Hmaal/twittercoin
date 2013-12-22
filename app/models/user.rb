@@ -43,6 +43,11 @@ class User < ActiveRecord::Base
     return user
   end
 
+  def self.retrieve_profile(screen_name)
+    # user = User.find_by("screen_name ILIKE ?", "%#{screen_name}%")
+
+  end
+
   # TODO: SECURITY, this is the most sensitive part
   def withdraw(amount, to_address)
 

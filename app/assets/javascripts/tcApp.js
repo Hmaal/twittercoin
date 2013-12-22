@@ -17,9 +17,9 @@ tcApp.config( function( $routeProvider ) {
 		controller: "homeCtrl"
 	} )
 
-	$routeProvider.when( "/profile/", {
+	$routeProvider.when( "/profile/:screenName", {
 		templateUrl: "/templates/profile.html",
-		controller: "profileCtrl"
+		controller: "profilesCtrl"
 	} )
 
 	$routeProvider.when( "/account/", {
