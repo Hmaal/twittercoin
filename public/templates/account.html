@@ -29,7 +29,7 @@
         </div>
 
       </tab>
-      <tab heading="Withdraw" active="true">
+      <tab heading="Withdraw">
         <br><br>
         <div class="col-md-8 col-md-offset-2">
           <blockquote ng-show="account.messages.withdraw.default">
@@ -59,6 +59,7 @@
               <label class="lead lead-super col-sm-2 control-label">Address</label>
               <div class="col-sm-10">
                 <input
+                  tabindex="1"
                   name="toAddress"
                   type="text"
                   class="square form-control"
@@ -84,6 +85,7 @@
               <label class="lead lead-super col-sm-2 control-label">Amount</label>
               <div class="col-sm-10">
                 <input
+                  tabindex="2"
                   class="square form-control"
                   name="amount"
                   type="number"

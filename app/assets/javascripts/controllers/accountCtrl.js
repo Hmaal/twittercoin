@@ -7,7 +7,6 @@ tcApp.controller( "accountCtrl", function( $scope, $resource, Account ) {
 
 		$scope.submitWithdraw = function() {
 			if ( $scope.withdrawForm.$invalid ) {
-				console.log( "Invalid!" )
 				return;
 			}
 
@@ -15,11 +14,9 @@ tcApp.controller( "accountCtrl", function( $scope, $resource, Account ) {
 				to_address: $scope.withdraw.toAddress,
 				amount: $scope.withdraw.amount,
 			}, function( response ) {
-				$scope.account.balance = response.balance
-				$scope.account.messages.withdraw = response.messages.withdraw
+				$scope.account = response
 			}, function( error ) {
-				console.log( "error", error )
-				$scope.account.messages.withdraw = error.messages.withdraw
+				$scope.account = response
 			} )
 		}
 	} )
