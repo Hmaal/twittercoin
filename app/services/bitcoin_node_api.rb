@@ -21,8 +21,8 @@ module BitcoinNodeAPI
     end
 
     def get_tx(tx_hash)
-        res = HTTParty.get "https://blockexplorer.com/rawtx/#{tx_hash}"
-        JSON.parse(res.body)
+        res = HTTParty.get ROOT+"rawtx/#{tx_hash}?format=hex"
+        [res.body].pack("H*")
     end
 
     def push_tx(hex, tx_hash)

@@ -37,7 +37,7 @@ module BitcoinAPI
     new_tx = build_tx do |t|
       unspents.each do |unspent|
         t.input do |i|
-          i.prev_out(Bitcoin::P::Tx.from_hash(BitcoinNodeAPI.get_tx(unspent["tx_hash"].reverse_hex)))
+          i.prev_out(Bitcoin::P::Tx.new(BitcoinNodeAPI.get_tx(unspent["tx_hash"].reverse_hex)))
           i.prev_out_index(unspent["tx_output_n"])
           i.signature_key(key)
         end
