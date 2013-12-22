@@ -31,6 +31,7 @@ GEM
     arel (4.0.1)
     atomic (1.1.14)
     awesome_print (1.2.0)
+    bitcoin-ruby (0.0.4)
     buftok (0.2.0)
     builder (3.1.4)
     coderay (1.1.0)
@@ -56,6 +57,7 @@ GEM
       railties (>= 3.0.0)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
+    ffi (1.9.3)
     font-awesome-rails (4.0.3.0)
       railties (>= 3.2, < 5.0)
     hashie (2.0.5)
@@ -195,9 +197,11 @@ DEPENDENCIES
   angular-ui-bootstrap-rails
   angularjs-rails (~> 1.2.5)
   awesome_print
+  bitcoin-ruby
   coffee-rails (~> 4.0.0)
   dotenv
   factory_girl_rails
+  ffi
   font-awesome-rails
   httparty
   jbuilder (~> 1.2)

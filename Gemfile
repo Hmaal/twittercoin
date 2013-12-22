@@ -13,19 +13,18 @@ gem 'angular-ui-bootstrap-rails'
 gem "font-awesome-rails"
 
 gem 'awesome_print'
-gem 'pry-rails'
 
 gem 'jbuilder', '~> 1.2'
 
 group :doc do
-  gem 'sdoc', require: false
+	gem 'sdoc', require: false
 end
 
 group :test do
-  gem 'rspec-rails'
-  gem 'vcr'
-  gem 'webmock'
-  gem 'factory_girl_rails'
+	gem 'rspec-rails'
+	gem 'vcr'
+	gem 'webmock'
+	gem 'factory_girl_rails'
 end
 
 gem 'httparty'
@@ -38,3 +37,10 @@ gem 'puma'
 gem 'pusher'
 
 gem 'dotenv'
+group :development, :test do
+	gem 'pry-rails'
+end
+
+# Bitcoin
+gem 'bitcoin-ruby', require: 'bitcoin'
+gem 'ffi'

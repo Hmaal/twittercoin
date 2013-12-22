@@ -3,12 +3,12 @@ class CreateAddresses < ActiveRecord::Migration
     create_table :addresses do |t|
       t.string :encrypted_private_key
       t.string :public_key
-      t.integer :user_id
+      t.string :address
+      t.references :user
 
       t.timestamps
     end
 
-    add_index :addresses, :encrypted_private_key
-    add_index :addresses, :public_key
+    add_index :addresses, :address
   end
 end
