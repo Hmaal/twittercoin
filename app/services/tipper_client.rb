@@ -2,16 +2,19 @@ module TipperClient
   extend self
 
   def search_user(screen_name)
-    user = TWITTER_CLIENT.user(screen_name)
+    # Cache TTL should be 1 day to 1 week
+    Rails.cache.fetch(screen_name) do
+      user = TWITTER_CLIENT.user(screen_name)
 
-    {
-      screenName: user.screen_name,
-      name: user.name,
-      description: user.description,
-      avatarLarge: user.profile_image_url_https.to_s.gsub("_normal", ""),
-      avatarSmall: user.profile_image_url_https.to_s,
-      uid: user.id.to_s
-    }
+      {
+        screenName: user.screen_name,
+        name: user.name,
+        description: user.description,
+        avatarLarge: user.profile_image_url_https.to_s.gsub("_normal", ""),
+        avatarSmall: user.profile_image_url_https.to_s,
+        uid: user.id.to_s
+      }
+    end
   end
 
   # Returns: Array of tweets

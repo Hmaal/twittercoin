@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   validates :screen_name, uniqueness: { case_sensitive: false }, presence: true
 
   def all_tips
-    self.tips_received + self.tips_given
+    (self.tips_received.valid + self.tips_given.valid).sort_by { |t| t.created_at }.reverse
   end
 
   # TODO
@@ -41,11 +41,6 @@ class User < ActiveRecord::Base
 
     user.addresses.create(BitcoinAPI.generate_address)
     return user
-  end
-
-  def self.retrieve_profile(screen_name)
-    # user = User.find_by("screen_name ILIKE ?", "%#{screen_name}%")
-
   end
 
   # TODO: SECURITY, this is the most sensitive part

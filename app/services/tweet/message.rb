@@ -4,7 +4,7 @@ module Tweet::Message
     extend self
 
     def recipient(recipient, sender, amount)
-      link = "tippercoin.com/#/profile/#{recipient}?r=#{rand}"
+      link = "tippercoin.com/#/profile/#{recipient}?direct=true&r=#{rand}"
       "Hi @#{recipient}, @#{sender} just tipped you #{amount / SATOSHIS.to_f} BTC! "\
       "See it here #{link}"
     end
