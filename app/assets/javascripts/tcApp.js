@@ -10,11 +10,21 @@ tcApp.config( function( $httpProvider ) {
 	return $httpProvider.defaults.headers.common[ "X-CSRF-TOKEN" ] = authToken;
 } );
 
+tcApp.run( function( $rootScope ) {
+	$rootScope.global = {
+		signedIn: signedIn
+	}
+} )
+
 tcApp.config( function( $routeProvider ) {
 
 	$routeProvider.when( "/", {
 		templateUrl: "/templates/home.html",
 		controller: "homeCtrl"
+	} )
+
+	$routeProvider.when( "/how-it-work/", {
+		templateUrl: "/templates/how-it-works.html"
 	} )
 
 	$routeProvider.when( "/profile/:screenName", {

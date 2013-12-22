@@ -20,7 +20,7 @@
 /*CUSTOM CSS*/
 
 [ng-cloak] {
-	display: none;
+	display: none!important;
 }
 
 .navbar-brand {

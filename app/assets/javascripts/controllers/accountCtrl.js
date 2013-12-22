@@ -1,6 +1,6 @@
 'use strict'
 
-tcApp.controller( "accountCtrl", function( $scope, $resource, Account ) {
+tcApp.controller( "accountCtrl", function( $scope, $resource, Account, $location ) {
 
 	Account.get( "/", function( account ) {
 		$scope.account = account
@@ -19,5 +19,7 @@ tcApp.controller( "accountCtrl", function( $scope, $resource, Account ) {
 				$scope.account = response
 			} )
 		}
+	}, function( error ) {
+		$location.path( "/" )
 	} )
 } )
