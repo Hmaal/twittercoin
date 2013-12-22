@@ -5,7 +5,7 @@ class SessionsController < ApplicationController
     auth = request.env["omniauth.auth"]
 
     user = User.find_profile(auth["info"]["nickname"])
-    ap user
+
     user ||= User.create_profile(auth["info"]["nickname"],
       uid: auth["uid"],
       via_oauth: true )
