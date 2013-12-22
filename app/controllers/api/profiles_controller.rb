@@ -3,10 +3,10 @@ class Api::ProfilesController < ActionController::Base
   def build
 
     # TODO: No user?
-    @screen_name = params[:screen_name] || User.find_by(slug: session[:slug]).screen_name
+    params[:screen_name] ||= User.find_by(slug: session[:slug]).screen_name
 
-    @user = User.find_profile(@screen_name)
-    @twitter_user = TipperClient.search_user(@screen_name)
+    @user = User.find_profile(params[:screen_name])
+    @twitter_user = TipperClient.search_user(params[:screen_name])
 
     total_satoshis_given = 0
     total_satoshis_received = 0
@@ -21,8 +21,8 @@ class Api::ProfilesController < ActionController::Base
 
       # Count tips
       giving = sender[:screenName] == params["screen_name"]
-      total_satoshis_given += tip.transaction.amount if giving
-      total_satoshis_received += tip.transaction.amount if !giving
+      total_satoshis_given += tip.satoshis if giving
+      total_satoshis_received += tip.satoshis if !giving
 
       {
         sender: {
@@ -36,9 +36,9 @@ class Api::ProfilesController < ActionController::Base
           css: giving ? "default" : "yellow"
         },
         txDirection:  giving ? "primary" : "success",
-        txHash: tip.transaction.try(:tx_hash),
+        txHash: tip.tx_hash,
         tweetLink: tip.build_link,
-        amount: tip.transaction.try(:satoshis),
+        amount: tip.satoshis / SATOSHIS.to_f,
         other: {
           presence: true,
           amount: 1,

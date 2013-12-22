@@ -22,7 +22,9 @@ tip1 = scott.tips_given.new({
   content: content1,
   screen_name: scott.screen_name,
   api_tweet_id_str: 1,
-  recipient_id: sida.id
+  recipient_id: sida.id,
+  satoshis: 100000,
+  tx_hash: SecureRandom.hex(10)
 })
 
 tip1.save
@@ -33,7 +35,9 @@ tip2 = sida.tips_given.new({
   content: content2,
   screen_name: sida.screen_name,
   api_tweet_id_str: 1,
-  recipient_id: scott.id
+  recipient_id: scott.id,
+  satoshis: 210000,
+  tx_hash: SecureRandom.hex(10)
 })
 
 tip2.save

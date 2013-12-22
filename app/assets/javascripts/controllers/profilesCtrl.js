@@ -10,7 +10,7 @@ tcApp.controller( "profilesCtrl", function( $scope, $resource, $routeParams, $lo
 		screenName: $routeParams.screenName
 	}, function( profile ) {
 		$scope.profile = profile;
-	}, function() {
+	}, function( error ) {
 		$location.path( "/" )
 	} )
 
