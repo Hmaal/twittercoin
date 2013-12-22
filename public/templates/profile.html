@@ -1,11 +1,14 @@
 <div class="row">
 	<div class="col-md-8 col-md-offset-2">
-		<!-- Enabled via param -->
-		<!-- <flash></flash> -->
+		<div ng-show="direct">
+			<flash></flash>
+		</div>
 	</div>
 </div>
 <h1 class='text-center username'>
-	<a href="#">@{{profile.screenName}}</a>
+	<a href="https://blockchain.info/address/{{profile.publicKey}}">
+		@{{profile.screenName}}
+	</a>
 	<span ng-show="profile.authenticated" class="label label-success square label-small">
 		AUTHENTICATED
 	</span>
@@ -18,12 +21,10 @@
 	<div class="col-md-4 col-md-offset-1">
 		<br>
 		<div class="text-center">
-			<a href="#">
-				<img src="{{profile.avatarLarge}}" height="256" width="256">
-			</a>
+			<img ng-src="{{profile.avatarLarge}}" height="256" width="256">
 		</div>
 	</div>
-	<div class="col-md-6 text-center key-info">
+	<div class="col-md-6 key-info">
 		<br>
 		<blockquote>
 			<p class="lead">{{profile.description}}</p>
@@ -33,7 +34,7 @@
 				<div class='h2 text-muted pull-left'><strong>TIPS RECEIVED:</strong></div>
 			</div>
 			<div class="col-md-4">
-				<p class='h2 text-success'>0.0001 BTC</p>
+				<p class='h2 text-success'>{{profile.totalTipsReceived}} BTC</p>
 			</div>
 		</div>
 		<div class="row">
@@ -41,7 +42,7 @@
 				<div class='h2 text-muted pull-left'><strong>TIPS GIVEN:</strong></div>
 			</div>
 			<div class="col-md-4">
-				<p class='h2 text-primary'>0.0114 BTC</p>
+				<p class='h2 text-primary'>{{profile.totalTipsGiven}} BTC</p>
 			</div>
 		</div>
 	</div>
@@ -63,30 +64,30 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr class='text-center' ng-repeat="i in [1, 2, 3]">
+				<tr class='text-center' ng-repeat="tip in profile.tips">
 					<td>
 						<a class='no-decorate' href="#">
 							<p class="lead">
-								<img src="https://pbs.twimg.com/profile_images/3580641456/82c873940343750638b7caa04b4652fe_normal.jpeg">
-								<span class="label label-yellow label-large square">
-									<strong>@fredwilson</strong>
+								<img ng-src="{{tip.sender.avatarSmall}}">
+								<span class="label label-{{tip.sender.css}} label-large square">
+									<strong>@{{tip.sender.screenName}}</strong>
 								</span>
 							</p>
 						</a>
 					</td>
 					<td>
 						<p class="lead">
-							<a href="#" class='text-primary'>
-								<i class="fa fa-arrow-circle-o-right fa-lg"></i>
+							<a href="https://blockchain.info/tx/{{tip.txHash}}" class='text-{{tip.txDirection}}'>
+								<i class="fa fa-arrow-circle-o-right fa-lg tx-direction"></i>
 							</a>
 						</p>
 					</td>
 					<td>
 						<a class='no-decorate' href="#">
 							<p class="lead">
-								<img src="https://pbs.twimg.com/profile_images/1284666062/GavinAndresen_normal.jpg">
-								<span class="label label-default label-thin label-large square">
-									@gavinandresen
+								<img ng-src="{{tip.recipient.avatarSmall}}">
+								<span class="label label-{{tip.recipient.css}} label-thin label-large square">
+									@{{tip.recipient.screenName}}
 								</span>
 							</p>
 						</a>
@@ -94,14 +95,14 @@
 					</td>
 					<td>
 						<p class="lead text-success">
-							<span class="text-primary">0.0051 BTC</span>
-							<span class="text-muted">
-								<small>/1 beer</small>
+							<span class="text-primary">{{tip.amount}} BTC</span>
+							<span class="text-muted" ng-show="tip.other.presence">
+								<small>/{{tip.other.amount}} {{tip.other.unit}}</small>
 							</span>
 						</p>
 					</td>
 					<td>
-						<a class='text-muted' href="">
+						<a class='text-muted' href="{{tip.tweetLink}}">
 							<p class="lead twitter-button">
 								<i class="fa fa-twitter"></i>
 							</p>
