@@ -31,7 +31,7 @@ class Api::AccountController < ActionController::Base
     return unless session[:slug]
 
     @user = User.find_by(slug: session[:slug])
-    @balance = (@user.get_balance / SATOSHIS.to_f).round(6)
+    @balance = (@user.get_balance / SATOSHIS.to_f).round(8)
     @account = {
       messages: {
         welcome: true,
