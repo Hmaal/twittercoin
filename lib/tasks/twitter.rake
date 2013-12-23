@@ -34,7 +34,10 @@ namespace :twitter do
         rescue => e
           puts e.inspect
           puts e.backtrace
-          # TODO: PagerDuty
+          raise CriticalError.new("Error in twitter stream: #{e.inspect}", {
+            inspect: e.inspect,
+            backtrace: e.backtrace
+          })
         end
 
       end
