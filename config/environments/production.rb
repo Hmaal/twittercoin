@@ -45,7 +45,7 @@ Twittercoin::Application.configure do
 
   # Set to :debug to see everything in the log.
   config.logger = Logger.new(STDOUT)
-  config.logger.level = 'DEBUG'
+  config.logger.level = Logger.const_get('DEBUG')
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
