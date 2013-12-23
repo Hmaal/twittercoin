@@ -26,22 +26,22 @@ module Tweet::Message
     def not_enough_balance(sender)
       # TODO: Include link with amount
 
-      link = "tippercoin.com/#/account/deposit?r=#{rand}"
+      link = "tippercoin.com/auth/twitter?r=#{rand}"
       "Hi @#{sender}, please top up on your account before sending this tip. #{link}"
     end
 
     def zero_amount(sender)
-      link = "tippercoin.com/#/documentation?r=#{rand}"
+      link = "tippercoin.com/#/how-it-works?r=#{rand}"
       "Hi @#{sender}, please tip 0.001 BTC or more. Refer to #{link}"
     end
 
     def direct_tweet(sender)
-      link = "tippercoin.com/#/documentation?r=#{rand}"
+      link = "tippercoin.com/#/how-it-works?r=#{rand}"
       "Hi @#{sender}, please try tipping someone else. Refer to #{link}"
     end
 
     def unknown(sender)
-      link = "tippercoin.com/#/documentation?r=#{rand}"
+      link = "tippercoin.com/#/how-it-works?r=#{rand}"
       "Hi @#{sender}, sorry, I'm not sure what you meant :s. Please refer to #{link}"
     end
 
