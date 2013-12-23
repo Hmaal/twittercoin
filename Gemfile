@@ -36,9 +36,9 @@ gem 'puma'
 
 gem 'pusher'
 
-gem 'dotenv'
 group :development, :test do
 	gem 'pry-rails'
+  gem 'dotenv'
 end
 
 # Bitcoin
