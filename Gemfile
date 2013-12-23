@@ -51,3 +51,5 @@ gem 'memcachier'
 gem 'dalli'
 
 gem 'newrelic_rpm'
+
+gem 'pagerduty'
