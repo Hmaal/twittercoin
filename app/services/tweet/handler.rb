@@ -36,6 +36,7 @@ class Tweet::Handler
     return @state = :zero_amount if @satoshis.try(:zero?)
     return @state = :direct_tweet if @parsed_tweet.direct_tweet?
     return @state = :not_enough_balance if !@sender_user.enough_balance?(@satoshis)
+    return @state = :enough_confirmed_unspents if !@sender_user.enough_confirmed_unspents?(@satoshis) # we should have confirmed that there is enough balance now
     return @state = :unknown if !@parsed_tweet.valid? # Other Unknown Error
     @valid = true
   end

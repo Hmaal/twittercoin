@@ -30,6 +30,11 @@ module Tweet::Message
       "Hi @#{sender}, please top up on your account before sending this tip. #{link}"
     end
 
+    def enough_confirmed_unspents(sender)
+      link = "tippercoin.com/#/account/deposit?r=#{rand}"
+      "Hi @#{sender}, you don't have enough confirmed unspents, pls wait for a few mins! #{link}"
+    end
+
     def zero_amount(sender)
       link = "tippercoin.com/#/documentation?r=#{rand}"
       "Hi @#{sender}, please tip 0.001 BTC or more. Refer to #{link}"
