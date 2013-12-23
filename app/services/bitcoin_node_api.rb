@@ -29,8 +29,7 @@ module BitcoinNodeAPI
         payload = {
           format: "plain",
           tx: hex,
-          hash: tx_hash,
-          cors: "true",
+          hash: tx_hash
         }
         post("pushtx", payload)
     end
