@@ -48,9 +48,13 @@ module BitcoinAPI
         o.script {|s| s.recipient(to_address) }
       end
 
-      t.output do |o|
-        o.value(unspents.unspent_value - (amount+fee))
-        o.script {|s| s.recipient key.addr }
+      # now deal with change
+      change_value = unspents.unspent_value - (amount+fee)
+      if change_value > 0
+        t.output do |go|
+          o.value(change_value)
+          o.script {|s| s.recipient key.addr }
+        end
       end
     end
 
