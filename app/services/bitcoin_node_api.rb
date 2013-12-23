@@ -44,7 +44,7 @@ module BitcoinNodeAPI
     def post(url, payload)
         options = {body: payload}
         res = HTTParty.post(ROOT + url, options)
-        raise PushTransactionFailed.new(res.body, options.merge!(res.code)) if res.code >= 400
+        raise PushTransactionFailed.new(res.body, options.merge!({"status" => res.code})) if res.code >= 400
         res.body
     end
 

@@ -39,8 +39,18 @@ class User < ActiveRecord::Base
   end
 
   def enough_balance?(amount)
-    amount ||= 0
+    return false if amount.nil?
     get_balance >= amount + FEE
+  end
+
+  def enough_confirmed_unspents?(amount)
+    begin
+      BitcoinAPI.get_unspents(self.current_address, amount + FEE)
+      return true
+    rescue Exception => e
+      ap e.inspect
+      return false
+    end
   end
 
   def withdraw(amount, to_address)
