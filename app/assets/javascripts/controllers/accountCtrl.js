@@ -19,11 +19,12 @@ tcApp.controller( "accountCtrl", function( $scope, $resource, Account, $location
 				withdrawAmount: $scope.withdraw.amount,
 			}, function( response ) {
 				$scope.sending = false
+				$scope.withdrawFailed = false
 				$scope.account = response
 			}, function( error ) {
 				console.log( error )
 				$scope.sending = false
-				$scope.errorMessages = error
+				$scope.withdrawFailed = true
 			} )
 		}
 	}, function( error ) {
