@@ -39,7 +39,7 @@ class User < ActiveRecord::Base
   end
 
   def enough_balance?(amount)
-    amount ||= 0
+    return false if amount.nil?
     get_balance >= amount + FEE
   end
 
