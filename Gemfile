@@ -38,8 +38,9 @@ gem 'pusher'
 
 group :development, :test do
 	gem 'pry-rails'
-  gem 'dotenv'
 end
+
+gem 'dotenv'
 
 # Bitcoin
 gem 'bitcoin-ruby', require: 'bitcoin'

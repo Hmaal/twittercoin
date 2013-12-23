@@ -5,7 +5,7 @@ module BitcoinAPI
   def generate_address()
     private_key, public_key = Bitcoin::generate_key
     address = Bitcoin::pubkey_to_address(public_key)
-    encrypted_private_key = AES.encrypt(private_key, DECRYPTION_KEY)
+    encrypted_private_key = AES.encrypt(private_key, ENV["DECRYPTION_KEY"])
     {
       encrypted_private_key: encrypted_private_key,
       public_key: public_key,
