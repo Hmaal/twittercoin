@@ -24,6 +24,8 @@ class Api::ProfilesController < ActionController::Base
       total_satoshis_given += tip.satoshis if giving
       total_satoshis_received += tip.satoshis if !giving
 
+
+
       {
         sender: {
           screenName: sender[:screenName],
@@ -40,9 +42,9 @@ class Api::ProfilesController < ActionController::Base
         tweetLink: tip.build_link,
         amount: tip.satoshis / SATOSHIS.to_f,
         other: {
-          presence: true,
-          amount: 1,
-          unit: "beer"
+          presence: false,
+          amount: nil,
+          unit: nil
         }
       }
     end
