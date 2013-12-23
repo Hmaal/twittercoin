@@ -2,4 +2,4 @@
 
 Send Bitcoins over Twitter.
 
-www.tippercoin.com
+www.tippercoin.com/#/how-it-works
