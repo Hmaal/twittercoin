@@ -44,8 +44,7 @@ module BitcoinNodeAPI
     def post(url, payload)
         options = {body: payload}
         res = HTTParty.post(ROOT + url, options)
-        # TODO
-        raise "PushTransactionFailed: #{res.body}" if res.code >= 400
+        raise PushTransactionFailed.new(res.body, options.merge!(res.code)) if res.code >= 400
         res.body
     end
 
@@ -54,4 +53,5 @@ module BitcoinNodeAPI
         res.code >= 400 || JSON.parse(res.body)["error"]
     end
 
+    class PushTransactionFailed < CriticalError; end
 end
