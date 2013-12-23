@@ -44,7 +44,8 @@ Twittercoin::Application.configure do
   # config.force_ssl = true
 
   # Set to :debug to see everything in the log.
-  config.log_level = :info
+  config.logger = Logger.new(STDOUT)
+  config.logger.level = 'DEBUG'
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
