@@ -36,11 +36,20 @@ gem 'puma'
 
 gem 'pusher'
 
-gem 'dotenv'
 group :development, :test do
 	gem 'pry-rails'
 end
 
+gem 'dotenv'
+
 # Bitcoin
 gem 'bitcoin-ruby', require: 'bitcoin'
 gem 'ffi'
+
+
+gem 'memcachier'
+gem 'dalli'
+
+gem 'newrelic_rpm'
+
+gem 'pagerduty'

@@ -2,8 +2,8 @@ module TipperClient
   extend self
 
   def search_user(screen_name)
-    # Cache TTL should be 1 day to 1 week
-    Rails.cache.fetch(screen_name) do
+    # Cache TTL should be 1 week
+    Rails.cache.fetch(screen_name, expires_in: 1.week) do
       user = TWITTER_CLIENT.user(screen_name)
 
       {

@@ -34,7 +34,21 @@ namespace :twitter do
         rescue => e
           puts e.inspect
           puts e.backtrace
-          # TODO: PagerDuty
+
+          # TODO: Automated response, e.g. 'something went wrong'
+
+          raise CriticalError.new("Error in twitter stream: #{e.inspect}", {
+            inspect: e.inspect,
+            backtrace: e.backtrace
+            })
+        ensure
+          begin
+            if (ActiveRecord::Base.connection && ActiveRecord::Base.connection.active?)
+              ap "Closing ActiveRecord Connection"
+              ActiveRecord::Base.connection.close
+            end
+          rescue
+          end
         end
 
       end
