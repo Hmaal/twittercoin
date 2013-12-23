@@ -13,4 +13,8 @@ class TweetTip < ActiveRecord::Base
     "https://twitter.com/#{self.screen_name}/status/#{self.api_tweet_id_str}"
   end
 
+  def valid?
+    !self.tx_hash.nil?
+  end
+
 end
