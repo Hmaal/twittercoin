@@ -1,3 +1,232 @@
 <h1 class='text-center'>
   How It Works
 </h1>
+<br>
+<div class="row">
+  <div class="col-md-1 col-md-offset-2">
+    <div class="h3">1.</div>
+  </div>
+  <div class="col-md-6">
+    <div class="text-muted lead">
+      TipperCoin authenticates your identity when you <a href="/auth/twitter">Sign In via Twitter.</a> A unique Bitcoin address is then created for you.
+    </div>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-md-1 col-md-offset-2">
+    <div class="h3">2.</div>
+  </div>
+  <div class="col-md-6">
+    <div class="text-muted lead">
+      Your account becomes activated when you deposit sufficient Bitcoins (0.0002 BTC).
+    </div>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-md-1 col-md-offset-2">
+    <div class="h3">3.</div>
+  </div>
+  <div class="col-md-6">
+    <div class="text-muted lead">
+      Now you can send Bitcoins over twitter by tweeting at anyone (they do not need an account to initially receive Bitcoins). For example, "@friend, thanks bro, here's 0.01 BTC #tippercoin"
+    </div>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-md-1 col-md-offset-2">
+    <div class="h3">4.</div>
+  </div>
+  <div class="col-md-6">
+    <div class="text-muted lead">
+      The TipperCoin Bot, <a href="https://twitter.com/tippercoin">@tippercoin</a>, constantly listens for every tweet containing <span class="text-info">#tippercoin</span> or <span class="text-info">@tippercoin</span>. The Bot will then parse the tweet, looking for the recipient and send amount. (See Below)
+    </div>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-md-1 col-md-offset-2">
+    <div class="h3">5.</div>
+  </div>
+  <div class="col-md-6">
+    <div class="text-muted lead">
+      As soon as the funds are sent, both you and the recipient will receive a confirmation tweet.
+    </div>
+  </div>
+</div>
+<br>
+<div class="row">
+  <div class="col-md-1 col-md-offset-2">
+    <div class="h3">6.</div>
+  </div>
+  <div class="col-md-6">
+    <div class="text-muted lead">
+      An address is automatically created for the recipient if they do not already have one. The recipient will then need to authenticate via twitter within 21 days to receive the Bitcoins, otherwise, the Bitcoins are automatically refunded to the sender.
+    </div>
+  </div>
+</div>
+<br>
+<h1 class='text-center'>
+  Tweet Examples
+</h1>
+<br>
+<div class="row">
+  <div class="col-md-offset-1 col-md-10">
+    <table class="table table-bordered text-center">
+    <tbody>
+      <tr>
+        <td class='col-md-1'>
+          <strong>Recipient</strong>
+        </td>
+        <td class='col-md-2'>@recipient</td>
+        <!-- Tweet -->
+        <td rowspan="2">
+          <p class="lead">
+            "<span class='text-info'>@recipient</span>, awesome message yo, 0.001 BTC <span class='text-info'>@tippercoin</span>"
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td class='col-md-1'>
+          <strong>Amount</strong>
+        </td>
+        <td>0.0001 BTC</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-offset-1 col-md-10">
+    <table class="table table-bordered text-center">
+    <tbody>
+      <tr>
+        <td class='col-md-1'>
+          <strong>Recipient</strong>
+        </td>
+        <td class='col-md-2'>@recipient</td>
+        <!-- Tweet -->
+        <td rowspan="2">
+          <p class="lead">
+            "<span class='text-info'>@recipient</span>, awesome message yo, 0.001 Bitcoins <span class='text-info'>#tippercoin</span>"
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td class='col-md-1'>
+          <strong>Amount</strong>
+        </td>
+        <td>0.0001 BTC</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-offset-1 col-md-10">
+    <table class="table table-bordered text-center">
+    <tbody>
+      <tr>
+        <td class='col-md-1'>
+          <strong>Recipient</strong>
+        </td>
+        <td class='col-md-2'>@recipient</td>
+        <!-- Tweet -->
+        <td rowspan="2">
+          <p class="lead">
+            "<span class='text-info'>@recipient</span>, awesome message yo, $5 <span class='text-info'>#tippercoin</span>"
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td class='col-md-1'>
+          <strong>Amount</strong>
+        </td>
+        <td>$5 worth of BTC</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-offset-1 col-md-10">
+    <table class="table table-bordered text-center">
+    <tbody>
+      <tr>
+        <td class='col-md-1'>
+          <strong>Recipient</strong>
+        </td>
+        <td class='col-md-2'>@recipient</td>
+        <!-- Tweet -->
+        <td rowspan="2">
+          <p class="lead">
+            "<span class='text-info'>@recipient</span>, awesome message yo, 2 beers <span class='text-info'>#tippercoin</span>"
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td class='col-md-1'>
+          <strong>Amount</strong>
+        </td>
+        <td>(2 * $4) worth of BTC</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-offset-1 col-md-10">
+    <table class="table table-bordered text-center">
+    <tbody>
+      <tr>
+        <td class='col-md-1'>
+          <strong>Recipient</strong>
+        </td>
+        <td class='col-md-2'>@recipient</td>
+        <!-- Tweet -->
+        <td rowspan="2">
+          <p class="lead">
+            "<span class='text-info'>@recipient</span>, awesome message yo, 5 internets <span class='text-info'>#tippercoin</span>"
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td class='col-md-1'>
+          <strong>Amount</strong>
+        </td>
+        <td>(5 * $1.337) worth of BTC</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-offset-1 col-md-10">
+    <table class="table table-bordered text-center">
+    <tbody>
+      <tr>
+        <td class='col-md-1'>
+          <strong>Recipient</strong>
+        </td>
+        <td class='col-md-2'>@recipient1</td>
+        <!-- Tweet -->
+        <td rowspan="2">
+          <p class="lead">
+            "<span class='text-info'>@recipient1</span>, <span class='text-info'>@recipient2</span>, awesome message yo, 0.001 BTC <span class='text-info'>#tippercoin</span>"
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td class='col-md-1'>
+          <strong>Amount</strong>
+        </td>
+        <td>0.0001 BTC</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<br><br><br><br><br><br>
