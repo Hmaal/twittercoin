@@ -36,6 +36,8 @@ namespace :twitter do
           puts e.backtrace
 
           # TODO: Automated response, e.g. 'something went wrong'
+          # @reply = Tweet::Message::Invalid.send(@state, @sender)
+          # TWITTER_CLIENT.update(@reply, in_reply_to_status_id: @reply_id)
 
           raise CriticalError.new("Error in twitter stream: #{e.inspect}", {
             inspect: e.inspect,
@@ -47,7 +49,11 @@ namespace :twitter do
               ap "Closing ActiveRecord Connection"
               ActiveRecord::Base.connection.close
             end
-          rescue
+          rescue => e
+            raise CriticalError.new("ActiveRecord Connection did not close: #{e.inspect}", {
+              inspect: e.inspect,
+              backtrace: e.backtrace
+            })
           end
         end
 
