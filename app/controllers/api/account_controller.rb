@@ -13,7 +13,7 @@ class Api::AccountController < ActionController::Base
 
     result = @user.withdraw(amount, to_address)
 
-    @account[:balance] = (@account[:balance] - (amount/SATOSHIS.to_f)).round(6)
+    @account[:balance] = (@account[:balance] - ((amount + FEE) / SATOSHIS.to_f)).round(8)
     @account[:messages][:withdraw] = {
       default: false,
       success: true,
