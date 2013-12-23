@@ -19,7 +19,7 @@ module Tweet::Message
 
     def unauthenticated(sender)
       link = "tippercoin.com/auth/twitter?r=#{rand}"
-      "Hi there @#{sender}, to start tipping, please authenticate via twitter "\
+      "Hey there @#{sender}, to start tipping, please authenticate via twitter "\
       "and make a deposit. Thanks! #{link}"
     end
 
@@ -31,12 +31,12 @@ module Tweet::Message
     end
 
     def enough_confirmed_unspents(sender)
-      link = "tippercoin.com/auth/twitter?r=#{rand}"
+      link = "tippercoin.com/#/account/deposit?r=#{rand}"
       "Hi @#{sender}, you don't have enough confirmed unspents, pls wait for a few mins! #{link}"
     end
 
     def negative_amount(sender)
-      link = "tippercoin.com/#/how-it-works?r=#{rand}"
+      link = "tippercoin.com/#/documentation?r=#{rand}"
       "Hi @#{sender}, You can't send negative amounts! #{link}"
     end
 
