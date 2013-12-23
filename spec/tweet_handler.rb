@@ -90,10 +90,7 @@ describe Tweet::Handler, :vcr do
 
     context "with account" do
       before(:each) do
-        user = User.create_profile("McTestor")
-        user.uid = 123123
-        user.authenticated = true
-        user.save
+        User.create_profile("McTestor", uid: 123123, via_oauth: true)
       end
 
 
