@@ -34,6 +34,9 @@ namespace :twitter do
         rescue => e
           puts e.inspect
           puts e.backtrace
+
+          # TODO: Automated response, e.g. 'something went wrong'
+
           raise CriticalError.new("Error in twitter stream: #{e.inspect}", {
             inspect: e.inspect,
             backtrace: e.backtrace
