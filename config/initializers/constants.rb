@@ -2,10 +2,12 @@
 SATOSHIS = 100_000_000
 MILLIBIT = 1000
 
-raise "DecryptionKey Missing From Environment" if !ENV["DECRYPTION_KEY"]
-DECRYPTION_KEY = ENV["DECRYPTION_KEY"]
-raise "Bitcoin Environment Not Set" if !ENV["BITCOIN_ENV"]
-Bitcoin.network = ENV["BITCOIN_ENV"]
+# raise "DecryptionKey Missing From Environment" if !ENV["DECRYPTION_KEY"]
+# DECRYPTION_KEY = ENV["DECRYPTION_KEY"]
+# raise "Bitcoin Environment Not Set" if !ENV["BITCOIN_ENV"]
+# Bitcoin.network = ENV["BITCOIN_ENV"]
+
+
 FEE = 10000
 MINIMUM_DEPOSIT = 20000
 

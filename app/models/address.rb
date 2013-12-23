@@ -9,7 +9,7 @@ class Address < ActiveRecord::Base
   ### TODO: validate public/private keys
 
   def decrypt()
-  	@private_key = AES.decrypt(self.encrypted_private_key, DECRYPTION_KEY)
+  	@private_key = AES.decrypt(self.encrypted_private_key, ENV["DECRYPTION_KEY"])
   end
 
 end
