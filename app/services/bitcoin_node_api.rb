@@ -46,7 +46,7 @@ module BitcoinNodeAPI
         options = {body: payload}
         res = HTTParty.post(ROOT + url, options)
         # TODO
-        raise "PushTransactionFailed" if res.code >= 400
+        raise "PushTransactionFailed: #{res.body}" if res.code >= 400
         res.body
     end
 

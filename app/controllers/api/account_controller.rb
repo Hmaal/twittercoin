@@ -8,11 +8,10 @@ class Api::AccountController < ActionController::Base
 
   def withdraw
     ap params
-    amount = (params[:withdrawAmount].to_f * SATOSHIS).to_i
+    amount = params[:withdrawAmount].to_f.to_satoshi
     to_address = params[:toAddress]
 
     result = @user.withdraw(amount, to_address)
-    return WithdrawFailed unless result
 
     @account[:balance] = (@account[:balance] - (amount/SATOSHIS.to_f)).round(6)
     @account[:messages][:withdraw] = {
