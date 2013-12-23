@@ -45,3 +45,7 @@ gem 'dotenv'
 # Bitcoin
 gem 'bitcoin-ruby', require: 'bitcoin'
 gem 'ffi'
+
+
+gem 'memcachier'
+gem 'dalli'
