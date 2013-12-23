@@ -67,7 +67,7 @@ module BitcoinAPI
   end
 
   def select_unspents(unspents, total_value)
-    raise InsufficientAmount.new("Needed #{total_value}, but only had #{unspents.unspent_value}") if unspents.unspent_value < (total_value)
+    raise InsufficientAmount.new("Needed #{total_value}, but only had #{unspents.unspent_value}. \nNote: Your unspents need to be confirmed first, maybe wait for another few minutes!") if unspents.unspent_value < (total_value)
     selected_unspents = []
     unspents.each do |unspent|
       if unspent["value"] >= total_value
