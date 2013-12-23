@@ -33,12 +33,12 @@ class Tweet::Handler
     @valid = false
     # @state represents what went wrong, and associated message method
     return @state = :unauthenticated if !@sender_user.authenticated
+    return @state = :unknown if !@parsed_tweet.valid? # Other Unknown Error
     return @state = :zero_amount if @satoshis.try(:zero?)
     return @state = :negative_amount if @satoshis < 0
     return @state = :direct_tweet if @parsed_tweet.direct_tweet?
     return @state = :not_enough_balance if !@sender_user.enough_balance?(@satoshis)
     return @state = :enough_confirmed_unspents if !@sender_user.enough_confirmed_unspents?(@satoshis) # we should have confirmed that there is enough balance now
-    return @state = :unknown if !@parsed_tweet.valid? # Other Unknown Error
     @valid = true
   end
 
